@@ -233,7 +233,7 @@ def getDB():
 def main():
     #11732360 (Oct-13-2021 09:01:59 AM +UTC) Purse contract created time
     
-    # queryData()
+    queryData()
     connectDB()
     updateDB()
     # getDB()
