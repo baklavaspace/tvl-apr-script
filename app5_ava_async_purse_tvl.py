@@ -129,10 +129,10 @@ def queryData():
             tvl = web3.fromWei(tokenAPrice * lpTokenInContract, 'ether')
         else:
             tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
-        apr = ((28000 * 365 * 315 * event["allocPoint"] * web3.fromWei(rewardPerBlock, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPoint)) * 100
-        apyDaily = ((1 + apr/36500*8/10)**365 -1) * 100
-        apyWeekly = ((1 + apr/5200*8/10)**52 -1) * 100
-        apyMonthly = ((1 + apr/1200*8/10)**12 -1) * 100
+        apr = ((28000 * 365 * 906 * event["allocPoint"] * web3.fromWei(rewardPerBlock, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPoint)) * 100
+        apyDaily = ((1 + apr/36500)**365 -1) * 100
+        apyWeekly = ((1 + apr/5200)**52 -1) * 100
+        apyMonthly = ((1 + apr/1200)**12 -1) * 100
 
         tvl = {"tvl":str(tvl)}
         apr = {"apr":str(apr)}
