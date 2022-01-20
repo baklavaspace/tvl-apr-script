@@ -188,7 +188,8 @@ def queryData():
 def connectDB():
     # CONNECTION_STRING = "mongodb+srv://"+mongoDBUser+":"+mongoDBPW+"@pundix.ruhha.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
     CONNECTION_STRING = "mongodb+srv://"+mongoDBUser+":"+urllib.parse.quote(mongoDBPW)+"@cluster0.adqfx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority"
-    client = MongoClient(CONNECTION_STRING)
+    # s = MongoClient("mongodb+srv://"+mongoDBUser+":"+urllib.parse.quote(mongoDBPW)+"@cluster0.adqfx.mongodb.net/myFirstDatabase?retryWrites=true&w=majority", tlsCAFile=certifi.where())
+    client = MongoClient(CONNECTION_STRING,tls=True, tlsAllowInvalidCertificates=True)
     return client['TVLAmount']
 
 def updateDB():
@@ -196,6 +197,8 @@ def updateDB():
     collectionName1 = dbName["TVL"]
     collectionName2 = dbName["APR"]
     collectionName3 = dbName["APYDaily"]
+    collectionName4 = dbName["BAVAPrice"]
+    print("start")
 
     with open('TVL.json') as tvl:
         data1 = json.load(tvl)
@@ -223,13 +226,22 @@ def updateDB():
             collectionName3.insert_many(data3)  
         else:
             collectionName3.insert_one(data3)
-    
+
+    with open("BAVAPrice.json") as bavaPrice:
+        data4 = json.load(bavaPrice)
+        print(data4)
+        collectionName4.delete_many({})
+        if isinstance(data4, list):
+            collectionName4.insert_many(data4)  
+        else:
+            collectionName4.insert_one(data4)
 
 def getDB():
     dbName = connectDB() 
     collectionName1 = dbName["TVL"]
     collectionName2 = dbName["APR"]
     collectionName3 = dbName["APYDaily"]
+    collectionName4 = dbName["BAVAPrice"]
     print("done")
 
     cursor1 = collectionName1.find({})
@@ -247,6 +259,11 @@ def getDB():
         totalBurnAmount = data3["apyDaily"]
         print(totalBurnAmount)
 
+    cursor4 = collectionName4.find({})
+    for data4 in cursor4:
+        bavaPrice = data4["bavaPrice"]
+        print(bavaPrice)
+
 
 
 # #############################################################################################################
@@ -256,9 +273,9 @@ def main():
     #11732360 (Oct-13-2021 09:01:59 AM +UTC) Purse contract created time
     
     queryData()
-    # connectDB()
-    # updateDB()
-    # getDB()
+    connectDB()
+    updateDB()
+    getDB()
 
     print("--- %s seconds ---" % (time.time() - start_time))
 
