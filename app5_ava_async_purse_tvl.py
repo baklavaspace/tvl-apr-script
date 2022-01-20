@@ -35,14 +35,14 @@ lpAbi = json.load(lpJson)
 # Load bavaMasterFarmAbi data
 bavaMasterFarmJson = open('BavaMasterFarm.json')
 bavaMasterFarmAbi = json.load(bavaMasterFarmJson)
-# bavaMasterFarmV1Json = open('BavaMasterFarmV1.json')
-# bavaMasterFarmV1Abi = json.load(bavaMasterFarmV1Json)
+bavaMasterFarmV1Json = open('BavaMasterFarmV1.json')
+bavaMasterFarmV1Abi = json.load(bavaMasterFarmV1Json)
 
 # Load Pool data
 farmJson = open('farm.json')
 farm = json.load(farmJson)
-# farmV1Json = open('farmV1.json')
-# farmV1 = json.load(farmV1Json)
+farmV1Json = open('farmV1.json')
+farmV1 = json.load(farmV1Json)
 
 bavaPGL = '0xeB69651B7146F4A42EBC32B03785C3eEddE58Ee7'
 bavaAddress = '0xe19A1684873faB5Fb694CfD06607100A632fF21c'
@@ -52,8 +52,8 @@ avaxContract = web3.eth.contract(address=avaxAddress, abi=bavaAbi["abi"])
 
 bavaMasterFarm = "0xb5a054312A73581A3c0FeD148b736911C02f4539"
 bavaMasterFarmContract = web3.eth.contract(address=bavaMasterFarm, abi=bavaMasterFarmAbi["abi"])
-# bavaMasterFarmV1 = ""
-# bavaMasterFarmContractV1 = web3.eth.contract(address=bavaMasterFarmV1, abi=bavaMasterFarmV1Abi["abi"])
+bavaMasterFarmV1 = "0x221C6774CF60277b36D21a57A31154EC96299d50"
+bavaMasterFarmContractV1 = web3.eth.contract(address=bavaMasterFarmV1, abi=bavaMasterFarmV1Abi["abi"])
 
 totalSupply = bavaContract.functions.totalSupply().call(block_identifier= 'latest')
 print(web3.fromWei(totalSupply, 'ether'))
@@ -92,6 +92,9 @@ def queryData():
     tvlArray=[]
     aprArray=[]
     apyArray=[]
+    bavatvlArray=[]
+    bavaaprArray=[]
+    bavaapyArray=[]
 
     rewardPerBlock = bavaMasterFarmContract.functions.REWARD_PER_BLOCK().call()
     totalAllocPoint = bavaMasterFarmContract.functions.totalAllocPoint().call()
@@ -147,7 +150,7 @@ def queryData():
             tvl = web3.fromWei(tokenAPrice * lpTokenInContract, 'ether')
         else:
             tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
-        apr = ((28000 * 365 * 906 * event["allocPoint"] * web3.fromWei(rewardPerBlock, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPoint)) * 100
+        apr = ((28000 * 365 * 793 * event["allocPoint"] * web3.fromWei(rewardPerBlock, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPoint)) * 100
         apyDaily = ((1 + apr/36500)**365 -1) * 100
         apyWeekly = ((1 + apr/5200)**52 -1) * 100
         apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -160,7 +163,55 @@ def queryData():
         aprArray.append(apr)
         apyArray.append(apyDaily)
 
-        print(tvlArray)
+    for event in farmV1["farm"]:
+        print("done")
+        lpContract = web3.eth.contract(address=event["lpAddresses"]["43114"], abi=lpAbi["abi"])
+        lpTokenA = web3.eth.contract(address=event["token"]["MAINNET"]["address"], abi=lpAbi["abi"])
+        lpTokenB = web3.eth.contract(address=event["quoteToken"]["MAINNET"]["address"], abi=lpAbi["abi"])
+
+        lpTokenInContract = bavaMasterFarmContractV1.functions.poolInfo(event["pid"]).call()
+        lpTokenInContract = lpTokenInContract[4]
+
+        lpTokenTSupply = lpContract.functions.totalSupply().call()
+        lpTokenABalanceContract = lpTokenA.functions.balanceOf(event["lpAddresses"]["43114"]).call()
+        lpTokenBBalanceContract = lpTokenB.functions.balanceOf(event["lpAddresses"]["43114"]).call()
+
+        if event["token"]["MAINNET"]["symbol"] == "BAVA" :
+            tokenAPrice = BAVAPrice
+        elif event["token"]["MAINNET"]["symbol"] == "AVAX" :
+            tokenAPrice = AVAXPrice 
+
+        if event["quoteToken"]["MAINNET"]["symbol"] == "BAVA" :
+            tokenBPrice = BAVAPrice
+        if event["quoteToken"]["MAINNET"]["symbol"] == "AVAX" :
+            tokenBPrice = AVAXPrice
+
+        lpTokenValue = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
+        if event["lpTokenPairsymbol"] == "XJOE" or event["lpTokenPairsymbol"] == "PNG" :
+            tvl = web3.fromWei(tokenAPrice * lpTokenInContract, 'ether')
+        else:
+            tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
+        
+        if tvl == 0 :
+            apr = ""
+            apyDaily = ""
+            apyMonthly = ""
+        else:
+            apr = ((28000 * 365 * 793 * event["allocPoint"] * web3.fromWei(rewardPerBlock, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPoint)) * 100
+            apyDaily = ((1 + apr/36500)**365 -1) * 100
+            apyWeekly = ((1 + apr/5200)**52 -1) * 100
+            apyMonthly = ((1 + apr/1200)**12 -1) * 100
+
+        bavatvl = {"tvl":str(tvl)}
+        bavaapr = {"apr":str(apr)}
+        bavaapyDaily = {"apyDaily":str(apyDaily)}
+
+        bavatvlArray.append(bavatvl)
+        bavaaprArray.append(bavaapr)
+        bavaapyArray.append(bavaapyDaily)
+
+        print(bavatvlArray)
+        print(bavaaprArray)
 
 
     with open("TVL.json", 'w') as tvl_file:
@@ -175,9 +226,21 @@ def queryData():
         apyFile = {"apyDaily":apyArray}
         json.dump((apyFile), apy_file, indent=4)
 
+    with open("BAVATVL.json", 'w') as bavatvl_file:
+        bavatvlFile = {"tvl":bavatvlArray}
+        json.dump(bavatvlFile, bavatvl_file, indent=4)
+    
+    with open("BAVAAPR.json", 'w') as bavaapr_file:
+        bavaaprFile = {"apr":bavaaprArray}
+        json.dump(bavaaprFile, bavaapr_file, indent=4)
+
+    with open("BAVAAPYDaily.json", 'w') as bavaapy_file:
+        bavaapyFile = {"apyDaily":bavaapyArray}
+        json.dump(bavaapyFile, bavaapy_file, indent=4)
+
     with open("BAVAPrice.json", 'w') as bava_file:
         bavaFile = {"bavaPrice":BAVAPrice}
-        json.dump((bavaFile), bava_file, indent=4)
+        json.dump(bavaFile, bava_file, indent=4)
 
 
 
@@ -198,6 +261,9 @@ def updateDB():
     collectionName2 = dbName["APR"]
     collectionName3 = dbName["APYDaily"]
     collectionName4 = dbName["BAVAPrice"]
+    collectionName5 = dbName["BAVATVL"]
+    collectionName6 = dbName["BAVAAPR"]
+    collectionName7 = dbName["BAVAAPYDaily"]
     print("start")
 
     with open('TVL.json') as tvl:
@@ -236,35 +302,80 @@ def updateDB():
         else:
             collectionName4.insert_one(data4)
 
+    with open('BAVATVL.json') as tvl:
+        data5 = json.load(tvl)
+        print(data5)
+        collectionName5.delete_many({})
+        if isinstance(data5, list):
+            collectionName5.insert_many(data5)  
+        else:
+            collectionName5.insert_one(data5)
+    
+    with open('BAVAAPR.json') as apr:
+        data6 = json.load(apr)
+        print(data6)
+        collectionName6.delete_many({})
+        if isinstance(data6, list):
+            collectionName6.insert_many(data6)  
+        else:
+            collectionName6.insert_one(data6)
+
+    with open('BAVAAPYDaily.json') as apyDaily:
+        data7 = json.load(apyDaily)
+        print(data7)
+        collectionName7.delete_many({})
+        if isinstance(data7, list):
+            collectionName7.insert_many(data7)  
+        else:
+            collectionName7.insert_one(data7)
+
+
+
 def getDB():
     dbName = connectDB() 
     collectionName1 = dbName["TVL"]
     collectionName2 = dbName["APR"]
     collectionName3 = dbName["APYDaily"]
     collectionName4 = dbName["BAVAPrice"]
+    collectionName5 = dbName["BAVATVL"]
+    collectionName6 = dbName["BAVAAPR"]
+    collectionName7 = dbName["BAVAAPYDaily"]
     print("done")
 
     cursor1 = collectionName1.find({})
     for data1 in cursor1:
-        totalTransferAmount = data1["tvl"]
-        print(totalTransferAmount)
+        tvl = data1["tvl"]
+        print(tvl)
 
     cursor2 = collectionName2.find({})
     for data2 in cursor2:
-        totalTransferAmount30Days = data2["apr"]
-        print(totalTransferAmount30Days)
+        apr = data2["apr"]
+        print(apr)
         
     cursor3 = collectionName3.find({})
     for data3 in cursor3:
-        totalBurnAmount = data3["apyDaily"]
-        print(totalBurnAmount)
+        apy = data3["apyDaily"]
+        print(apy)
 
     cursor4 = collectionName4.find({})
     for data4 in cursor4:
         bavaPrice = data4["bavaPrice"]
         print(bavaPrice)
 
+    cursor5 = collectionName5.find({})
+    for data5 in cursor5:
+        tvl = data5["tvl"]
+        print(tvl)
 
+    cursor6 = collectionName6.find({})
+    for data6 in cursor6:
+        apr = data6["apr"]
+        print(apr)
+        
+    cursor7 = collectionName7.find({})
+    for data7 in cursor7:
+        apy = data7["apyDaily"]
+        print(apy)
 
 # #############################################################################################################
 # Main code
