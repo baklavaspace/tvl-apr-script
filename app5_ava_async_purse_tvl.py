@@ -17,7 +17,7 @@ import urllib.parse
 start_time = time.time()
 #Connect Ethereum node 
 avarpc = "https://api.avax.network/ext/bc/C/rpc"
-web3 = Web3(Web3.HTTPProvider(avarpc))  
+web3 = Web3(Web3.HTTPProvider(avarpc))
 # web3 = Web3(Web3.WebsocketProvider(bscrpc))
  
 print(web3.isConnected())
@@ -35,19 +35,29 @@ lpAbi = json.load(lpJson)
 # Load bavaMasterFarmAbi data
 bavaMasterFarmJson = open('BavaMasterFarm.json')
 bavaMasterFarmAbi = json.load(bavaMasterFarmJson)
+# bavaMasterFarmV1Json = open('BavaMasterFarmV1.json')
+# bavaMasterFarmV1Abi = json.load(bavaMasterFarmV1Json)
 
 # Load Pool data
 farmJson = open('farm.json')
 farm = json.load(farmJson)
+# farmV1Json = open('farmV1.json')
+# farmV1 = json.load(farmV1Json)
 
+bavaPGL = '0xeB69651B7146F4A42EBC32B03785C3eEddE58Ee7'
 bavaAddress = '0xe19A1684873faB5Fb694CfD06607100A632fF21c'
-tokenContract = web3.eth.contract(address=bavaAddress, abi=bavaAbi["abi"])
+avaxAddress = '0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7'
+bavaContract = web3.eth.contract(address=bavaAddress, abi=bavaAbi["abi"])
+avaxContract = web3.eth.contract(address=avaxAddress, abi=bavaAbi["abi"])
+
 bavaMasterFarm = "0xb5a054312A73581A3c0FeD148b736911C02f4539"
 bavaMasterFarmContract = web3.eth.contract(address=bavaMasterFarm, abi=bavaMasterFarmAbi["abi"])
+# bavaMasterFarmV1 = ""
+# bavaMasterFarmContractV1 = web3.eth.contract(address=bavaMasterFarmV1, abi=bavaMasterFarmV1Abi["abi"])
 
-totalSupply = tokenContract.functions.totalSupply().call(block_identifier= 'latest')
+totalSupply = bavaContract.functions.totalSupply().call(block_identifier= 'latest')
 print(web3.fromWei(totalSupply, 'ether'))
-print(tokenContract.functions.name().call())
+print(bavaContract.functions.name().call())
 print("......")
 
 load_dotenv()
@@ -63,8 +73,16 @@ def queryData():
 # event = proxyContract.events.Transfer().processReceipt(receipt, errors= DISCARD)
     response = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cusd-coin%2Ctether%2Cbenqi&vs_currencies=usd")
     responseJson = response.json()
-    BAVAPrice = 0.10
+
+    bavalpContract = web3.eth.contract(address=bavaPGL, abi=lpAbi["abi"])
+    bavaBalance = bavaContract.functions.balanceOf(bavaPGL).call()
+    avaxBalance = avaxContract.functions.balanceOf(bavaPGL).call()
+    
+    ratio = bavaBalance/avaxBalance
+
     AVAXPrice = responseJson["wrapped-avax"]["usd"]
+    BAVAPrice = AVAXPrice/ratio
+
     PNGPrice = responseJson["pangolin"]["usd"]
     WETHPrice = responseJson["weth"]["usd"]
     USDTPrice = responseJson["tether"]["usd"]
@@ -157,6 +175,10 @@ def queryData():
         apyFile = {"apyDaily":apyArray}
         json.dump((apyFile), apy_file, indent=4)
 
+    with open("BAVAPrice.json", 'w') as bava_file:
+        bavaFile = {"bavaPrice":BAVAPrice}
+        json.dump((bavaFile), bava_file, indent=4)
+
 
 
 ##############################################################################################################
@@ -234,8 +256,8 @@ def main():
     #11732360 (Oct-13-2021 09:01:59 AM +UTC) Purse contract created time
     
     queryData()
-    connectDB()
-    updateDB()
+    # connectDB()
+    # updateDB()
     # getDB()
 
     print("--- %s seconds ---" % (time.time() - start_time))

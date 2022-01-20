@@ -1,0 +1,66 @@
+{
+    "farm": [
+      {
+        "pid": 0,
+        "lpTokenPairsymbol": "PGL",
+        "lpName": "BAVA-AVAX",
+        "lpAddresses": {
+          "43114": "0xeB69651B7146F4A42EBC32B03785C3eEddE58Ee7"
+        },
+        "icon": "BAVA-AVAX",
+        "platform": "Pangolin",
+        "allocPoint": 1000,
+        "projectLink": "https://baklava.space/menu/",
+        "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xe19A1684873faB5Fb694CfD06607100A632fF21c",
+        "token": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xe19A1684873faB5Fb694CfD06607100A632fF21c",
+            "decimals": "18",
+            "symbol": "BAVA",
+            "name": "Bava Token"
+          }
+        },
+        "quoteToken": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+            "decimals": "18",
+            "symbol": "AVAX",
+            "name": "Wrapped AVAX"            
+          }
+        }
+      },
+      {
+        "pid": 2,
+        "lpTokenPairsymbol": "JLP",
+        "lpName": "BAVA-AVAX",
+        "lpAddresses": {
+          "43114": "0x5a9071890302609D82E9d883EA7E6e89E9D6306f"
+        },
+        "icon": "BAVA-AVAX",
+        "platform": "Trader Joe",
+        "allocPoint": 1000,
+        "projectLink": "https://baklava.space/traderjoe/",
+        "getLPLink": "https://traderjoexyz.com/#/pool/AVAX/0xe19a1684873fab5fb694cfd06607100a632ff21c",
+        "token": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xe19A1684873faB5Fb694CfD06607100A632fF21c",
+            "decimals": "18",
+            "symbol": "BAVA",
+            "name": "Bava Token"
+          }
+        },
+        "quoteToken": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+            "decimals": "18",
+            "symbol": "AVAX",
+            "name": "Wrapped AVAX"            
+          }
+        }
+      }
+    ]
+}
