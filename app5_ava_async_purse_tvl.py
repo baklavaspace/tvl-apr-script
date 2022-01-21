@@ -95,6 +95,7 @@ def queryData():
     bavatvlArray=[]
     bavaaprArray=[]
     bavaapyArray=[]
+    returnRatioArray=[]
 
     rewardPerBlock = bavaMasterFarmContract.functions.REWARD_PER_BLOCK().call()
     totalAllocPoint = bavaMasterFarmContract.functions.totalAllocPoint().call()
@@ -105,7 +106,9 @@ def queryData():
         lpTokenB = web3.eth.contract(address=event["quoteToken"]["MAINNET"]["address"], abi=lpAbi["abi"])
 
         lpTokenInContract = bavaMasterFarmContract.functions.poolInfo(event["pid"]).call()
+        lpReceiptInContract = lpTokenInContract[5]
         lpTokenInContract = lpTokenInContract[4]
+        returnRatio = lpTokenInContract/lpReceiptInContract
 
         lpTokenTSupply = lpContract.functions.totalSupply().call()
         lpTokenABalanceContract = lpTokenA.functions.balanceOf(event["lpAddresses"]["43114"]).call()
@@ -158,10 +161,12 @@ def queryData():
         tvl = {"tvl":str(tvl)}
         apr = {"apr":str(apr)}
         apyDaily = {"apyDaily":str(apyDaily)}
+        returnRatio={"returnRatio":str(returnRatio)}
 
         tvlArray.append(tvl)
         aprArray.append(apr)
         apyArray.append(apyDaily)
+        returnRatioArray.append(returnRatio)
 
     for event in farmV1["farm"]:
         print("done")
@@ -210,9 +215,6 @@ def queryData():
         bavaaprArray.append(bavaapr)
         bavaapyArray.append(bavaapyDaily)
 
-        print(bavatvlArray)
-        print(bavaaprArray)
-
 
     with open("TVL.json", 'w') as tvl_file:
         tvlFile = {"tvl":tvlArray}
@@ -242,6 +244,10 @@ def queryData():
         bavaFile = {"bavaPrice":BAVAPrice}
         json.dump(bavaFile, bava_file, indent=4)
 
+    with open("ReturnRatio.json", 'w') as return_file:
+        returnFile = {"returnRatio":returnRatioArray}
+        json.dump(returnFile, return_file, indent=4)      
+
 
 
 ##############################################################################################################
@@ -264,6 +270,7 @@ def updateDB():
     collectionName5 = dbName["BAVATVL"]
     collectionName6 = dbName["BAVAAPR"]
     collectionName7 = dbName["BAVAAPYDaily"]
+    collectionName8 = dbName["ReturnRatio"]
     print("start")
 
     with open('TVL.json') as tvl:
@@ -329,7 +336,14 @@ def updateDB():
         else:
             collectionName7.insert_one(data7)
 
-
+    with open('ReturnRatio.json') as returnRatio:
+        data8 = json.load(returnRatio)
+        print(data8)
+        collectionName8.delete_many({})
+        if isinstance(data8, list):
+            collectionName8.insert_many(data8)  
+        else:
+            collectionName8.insert_one(data8)
 
 def getDB():
     dbName = connectDB() 
@@ -340,6 +354,7 @@ def getDB():
     collectionName5 = dbName["BAVATVL"]
     collectionName6 = dbName["BAVAAPR"]
     collectionName7 = dbName["BAVAAPYDaily"]
+    collectionName8 = dbName["ReturnRatio"]
     print("done")
 
     cursor1 = collectionName1.find({})
@@ -376,6 +391,11 @@ def getDB():
     for data7 in cursor7:
         apy = data7["apyDaily"]
         print(apy)
+
+    cursor8 = collectionName8.find({})
+    for data8 in cursor8:
+        returnRatio = data8["returnRatio"]
+        print(returnRatio)
 
 # #############################################################################################################
 # Main code
