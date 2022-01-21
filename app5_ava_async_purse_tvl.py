@@ -414,8 +414,8 @@ def main():
 if __name__ == "__main__":     # __name__ is a built-in variable in Python which evaluates to the name of the current module.
     main()
 
-schedule.every().hour.do(queryData)
-schedule.every().hour.do(updateDB)
+schedule.every(5).minutes.do(queryData)
+schedule.every(5).minutes.do(updateDB)
 
 while True:
     schedule.run_pending()
