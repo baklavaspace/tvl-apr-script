@@ -204,7 +204,12 @@ def queryData():
             apyDaily = ""
             apyMonthly = ""
         else:
+            print(decimal.Decimal(BAVAPrice))
+            print(totalAllocPoint)
+            print(event["allocPoint"])
+            print(web3.fromWei(rewardPerBlockV1, 'ether'))
             apr = ((28000 * 365 * 682 * event["allocPoint"] * web3.fromWei(rewardPerBlockV1, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV1)) * 100
+            print(apr)
             apyDaily = ((1 + apr/36500)**365 -1) * 100
             apyWeekly = ((1 + apr/5200)**52 -1) * 100
             apyMonthly = ((1 + apr/1200)**12 -1) * 100
