@@ -19,30 +19,34 @@ start_time = time.time()
 avarpc = "https://api.avax.network/ext/bc/C/rpc"
 web3 = Web3(Web3.HTTPProvider(avarpc))
 # web3 = Web3(Web3.WebsocketProvider(bscrpc))
- 
+
 print(web3.isConnected())
 print(web3.eth.blockNumber)
 latestBlk = web3.eth.blockNumber
 
 # Load BAVAABI data
-bavaJson = open('Bava.json')
+bavaJson = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/abi/'+'Bava.json')
 bavaAbi = json.load(bavaJson)
 
 # Load LpTokenABI data
-lpJson = open('LpToken.json')
+lpJson = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/abi/'+'LpToken.json')
 lpAbi = json.load(lpJson)
 
 # Load bavaMasterFarmAbi data
-bavaMasterFarmJson = open('BavaMasterFarm.json')
+bavaMasterFarmJson = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/abi/'+'BavaMasterFarm.json')
 bavaMasterFarmAbi = json.load(bavaMasterFarmJson)
-bavaMasterFarmV1Json = open('BavaMasterFarmV1.json')
+bavaMasterFarmV1Json = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/abi/'+'BavaMasterFarmV1.json')
 bavaMasterFarmV1Abi = json.load(bavaMasterFarmV1Json)
+bavaMasterFarmV2_2Json = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/abi/'+'BavaMasterFarmV2_2.json')
+bavaMasterFarmV2_2Abi = json.load(bavaMasterFarmV2_2Json)
 
 # Load Pool data
-farmJson = open('farm.json')
+farmJson = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/farm/'+'farm.json')
 farm = json.load(farmJson)
-farmV1Json = open('farmV1.json')
+farmV1Json = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/farm/'+'farmV1.json')
 farmV1 = json.load(farmV1Json)
+farmV2_2Json = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/farm/'+'farmV2_2.json')
+farmV2_2 = json.load(farmV2_2Json)
 
 bavaPGL = '0xeB69651B7146F4A42EBC32B03785C3eEddE58Ee7'
 bavaAddress = '0xe19A1684873faB5Fb694CfD06607100A632fF21c'
@@ -54,10 +58,10 @@ bavaMasterFarm = "0xb5a054312A73581A3c0FeD148b736911C02f4539"
 bavaMasterFarmContract = web3.eth.contract(address=bavaMasterFarm, abi=bavaMasterFarmAbi["abi"])
 bavaMasterFarmV1 = "0x221C6774CF60277b36D21a57A31154EC96299d50"
 bavaMasterFarmContractV1 = web3.eth.contract(address=bavaMasterFarmV1, abi=bavaMasterFarmV1Abi["abi"])
+bavaMasterFarmV2_2 = "0xfD6b09A76f81c83F7E7D792070Ab2A05550F887C"
+bavaMasterFarmContractV2_2 = web3.eth.contract(address=bavaMasterFarmV2_2, abi=bavaMasterFarmV2_2Abi["abi"])
 
 totalSupply = bavaContract.functions.totalSupply().call(block_identifier= 'latest')
-print(web3.fromWei(totalSupply, 'ether'))
-print(bavaContract.functions.name().call())
 print("......")
 
 load_dotenv()
@@ -71,18 +75,11 @@ mongoDBPW = os.getenv("MONGODB_PASSWORD")
 def queryData():
 # receipt = web3.eth.get_transaction_receipt("0x59c4f19ea4a6af4876f617419b812248bae8c5d915db5b6cc67ded5ede7ff593")   # or use tx_hash deifined on above command line
 # event = proxyContract.events.Transfer().processReceipt(receipt, errors= DISCARD)
-    response = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cusd-coin%2Ctether%2Cbenqi&vs_currencies=usd")
+    response = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cbaklava%2Cusd-coin%2Ctether%2Cbenqi&vs_currencies=usd")
     responseJson = response.json()
 
-    bavalpContract = web3.eth.contract(address=bavaPGL, abi=lpAbi["abi"])
-    bavaBalance = bavaContract.functions.balanceOf(bavaPGL).call()
-    avaxBalance = avaxContract.functions.balanceOf(bavaPGL).call()
-    
-    ratio = bavaBalance/avaxBalance
-
     AVAXPrice = responseJson["wrapped-avax"]["usd"]
-    BAVAPrice = AVAXPrice/ratio
-
+    BAVAPrice = responseJson["baklava"]["usd"]
     PNGPrice = responseJson["pangolin"]["usd"]
     WETHPrice = responseJson["weth"]["usd"]
     USDTPrice = responseJson["tether"]["usd"]
@@ -92,15 +89,22 @@ def queryData():
     tvlArray=[]
     aprArray=[]
     apyArray=[]
+    returnRatioArray=[]
+    tvlArrayV2_2=[]
+    aprArrayV2_2=[]
+    apyArrayV2_2=[]
+    returnRatioArrayV2_2=[]
     bavatvlArray=[]
     bavaaprArray=[]
     bavaapyArray=[]
-    returnRatioArray=[]
 
     rewardPerBlock = bavaMasterFarmContract.functions.REWARD_PER_BLOCK().call()
-    rewardPerBlockV1 = bavaMasterFarmContractV1.functions.REWARD_PER_BLOCK().call() 
+    rewardPerBlockV1 = bavaMasterFarmContractV1.functions.REWARD_PER_BLOCK().call()
+    rewardPerBlockV2_2 = bavaMasterFarmContractV2_2.functions.REWARD_PER_BLOCK().call()
     totalAllocPoint = bavaMasterFarmContract.functions.totalAllocPoint().call()
     totalAllocPointV1 = bavaMasterFarmContractV1.functions.totalAllocPoint().call()
+    totalAllocPointV2_2 = bavaMasterFarmContractV2_2.functions.totalAllocPoint().call()
+    
 
     for event in farm["farm"]:
         lpContract = web3.eth.contract(address=event["lpAddresses"]["43114"], abi=lpAbi["abi"])
@@ -155,6 +159,7 @@ def queryData():
             tvl = web3.fromWei(tokenAPrice * lpTokenInContract, 'ether')
         else:
             tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
+
         apr = ((28000 * 365 * 682 * event["allocPoint"] * web3.fromWei(rewardPerBlock, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPoint)) * 100
         apyDaily = ((1 + apr/36500)**365 -1) * 100
         apyWeekly = ((1 + apr/5200)**52 -1) * 100
@@ -171,7 +176,6 @@ def queryData():
         returnRatioArray.append(returnRatio)
 
     for event in farmV1["farm"]:
-        print("done")
         lpContract = web3.eth.contract(address=event["lpAddresses"]["43114"], abi=lpAbi["abi"])
         lpTokenA = web3.eth.contract(address=event["token"]["MAINNET"]["address"], abi=lpAbi["abi"])
         lpTokenB = web3.eth.contract(address=event["quoteToken"]["MAINNET"]["address"], abi=lpAbi["abi"])
@@ -204,12 +208,7 @@ def queryData():
             apyDaily = ""
             apyMonthly = ""
         else:
-            print(decimal.Decimal(BAVAPrice))
-            print(totalAllocPoint)
-            print(event["allocPoint"])
-            print(web3.fromWei(rewardPerBlockV1, 'ether'))
             apr = ((28000 * 365 * 682 * event["allocPoint"] * web3.fromWei(rewardPerBlockV1, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV1)) * 100
-            print(apr)
             apyDaily = ((1 + apr/36500)**365 -1) * 100
             apyWeekly = ((1 + apr/5200)**52 -1) * 100
             apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -223,6 +222,85 @@ def queryData():
         bavaapyArray.append(bavaapyDaily)
 
 
+    for event in farmV2_2["farm"]:
+        lpContract = web3.eth.contract(address=event["lpAddresses"]["43114"], abi=lpAbi["abi"])
+        lpTokenA = web3.eth.contract(address=event["token"]["MAINNET"]["address"], abi=lpAbi["abi"])
+        lpTokenB = web3.eth.contract(address=event["quoteToken"]["MAINNET"]["address"], abi=lpAbi["abi"])
+
+        lpTokenInContract = bavaMasterFarmContractV2_2.functions.poolInfo(event["pid"]).call()
+        lpReceiptInContract = lpTokenInContract[5]
+        lpTokenInContract = lpTokenInContract[4]
+        if lpReceiptInContract == 0 :
+            returnRatio = 1
+        else: 
+            returnRatio = lpTokenInContract/lpReceiptInContract
+
+        lpTokenTSupply = lpContract.functions.totalSupply().call()
+        lpTokenABalanceContract = lpTokenA.functions.balanceOf(event["lpAddresses"]["43114"]).call()
+        lpTokenBBalanceContract = lpTokenB.functions.balanceOf(event["lpAddresses"]["43114"]).call()
+
+        if event["token"]["MAINNET"]["symbol"] == "BAVA" :
+            tokenAPrice = BAVAPrice
+        elif event["token"]["MAINNET"]["symbol"] == "AVAX" :
+            tokenAPrice = AVAXPrice
+        elif event["token"]["MAINNET"]["symbol"] == "PNG" :
+            tokenAPrice = PNGPrice
+        elif (event["token"]["MAINNET"]["symbol"] == "USDT.e") :
+            tokenAPrice = USDTPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "WETH.e") :
+            tokenAPrice = WETHPrice
+        elif (event["token"]["MAINNET"]["symbol"] == "USDC.e") :
+            tokenAPrice = USDCPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "JOE") :
+            tokenAPrice = JOEPrice
+        elif (event["token"]["MAINNET"]["symbol"] == "QI") :
+            tokenAPrice = QIPrice    
+
+        if event["quoteToken"]["MAINNET"]["symbol"] == "BAVA" :
+            tokenBPrice = BAVAPrice
+        if event["quoteToken"]["MAINNET"]["symbol"] == "AVAX" :
+            tokenBPrice = AVAXPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "PNG" :
+            tokenBPrice = PNGPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "USDT.e" :
+            tokenBPrice = USDTPrice * 1000000000000
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "WETH.e" :
+            tokenBPrice = WETHPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "USDC.e" :
+            tokenBPrice = USDCPrice * 1000000000000
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "JOE" :
+            tokenBPrice = JOEPrice
+        elif (event["quoteToken"]["MAINNET"]["symbol"] == "QI") :
+            tokenBPrice = QIPrice 
+
+        lpTokenValue = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
+        if event["lpTokenPairsymbol"] == "XJOE" or event["lpTokenPairsymbol"] == "PNG" :
+            tvl = web3.fromWei(tokenAPrice * lpTokenInContract, 'ether')
+        else:
+            tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
+
+        if tvl == 0 :
+            apr = ""
+            apyDaily = ""
+            apyMonthly = ""
+        else:
+            apr = ((28000 * 365 * 682 * event["allocPoint"] * web3.fromWei(rewardPerBlockV2_2, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV2_2)) * 100
+            apyDaily = ((1 + apr/36500)**365 -1) * 100
+            apyWeekly = ((1 + apr/5200)**52 -1) * 100
+            apyMonthly = ((1 + apr/1200)**12 -1) * 100
+
+        tvlV2_2 = {"tvl":str(tvl)}
+        aprV2_2 = {"apr":str(apr)}
+        apyDailyV2_2 = {"apyDaily":str(apyDaily)}
+        returnRatioV2_2 = {"returnRatio":str(returnRatio)}
+
+        tvlArrayV2_2.append(tvlV2_2)
+        aprArrayV2_2.append(aprV2_2)
+        apyArrayV2_2.append(apyDailyV2_2)
+        returnRatioArrayV2_2.append(returnRatioV2_2)
+
+# **************************************** Update data ******************************************************
+
     with open("TVL.json", 'w') as tvl_file:
         tvlFile = {"tvl":tvlArray}
         json.dump(tvlFile, tvl_file, indent=4)
@@ -234,6 +312,26 @@ def queryData():
     with open("APYDaily.json", 'w') as apy_file:
         apyFile = {"apyDaily":apyArray}
         json.dump((apyFile), apy_file, indent=4)
+
+    with open("ReturnRatio.json", 'w') as return_file:
+        returnFile = {"returnRatio":returnRatioArray}
+        json.dump(returnFile, return_file, indent=4) 
+
+    with open("TVLV2_2.json", 'w') as tvl_file:
+        tvlFile = {"tvl":tvlArrayV2_2}
+        json.dump(tvlFile, tvl_file, indent=4)
+    
+    with open("APRV2_2.json", 'w') as apr_file:
+        aprFile = {"apr":aprArrayV2_2}
+        json.dump((aprFile), apr_file, indent=4)
+
+    with open("APYDailyV2_2.json", 'w') as apy_file:
+        apyFile = {"apyDaily":apyArrayV2_2}
+        json.dump((apyFile), apy_file, indent=4)
+
+    with open("ReturnRatioV2_2.json", 'w') as return_file:
+        returnFile = {"returnRatio":returnRatioArrayV2_2}
+        json.dump(returnFile, return_file, indent=4) 
 
     with open("BAVATVL.json", 'w') as bavatvl_file:
         bavatvlFile = {"tvl":bavatvlArray}
@@ -251,9 +349,7 @@ def queryData():
         bavaFile = {"bavaPrice":BAVAPrice}
         json.dump(bavaFile, bava_file, indent=4)
 
-    with open("ReturnRatio.json", 'w') as return_file:
-        returnFile = {"returnRatio":returnRatioArray}
-        json.dump(returnFile, return_file, indent=4)      
+     
 
 
 
@@ -278,6 +374,10 @@ def updateDB():
     collectionName6 = dbName["BAVAAPR"]
     collectionName7 = dbName["BAVAAPYDaily"]
     collectionName8 = dbName["ReturnRatio"]
+    collectionName9 = dbName["TVLV2_2"]
+    collectionName10 = dbName["APRV2_2"]
+    collectionName11 = dbName["APYDailyV2_2"]
+    collectionName12 = dbName["ReturnRatioV2_2"]
     print("start")
 
     with open('TVL.json') as tvl:
@@ -352,6 +452,42 @@ def updateDB():
         else:
             collectionName8.insert_one(data8)
 
+    with open('APRV2_2.json') as apr:
+        data9 = json.load(apr)
+        print(data9)
+        collectionName9.delete_many({})
+        if isinstance(data9, list):
+            collectionName9.insert_many(data9)  
+        else:
+            collectionName9.insert_one(data9)
+
+    with open('APYDailyV2_2.json') as apyDaily:
+        data10 = json.load(apyDaily)
+        print(data10)
+        collectionName10.delete_many({})
+        if isinstance(data10, list):
+            collectionName10.insert_many(data10)  
+        else:
+            collectionName10.insert_one(data10)
+
+    with open('TVLV2_2.json') as tvl:
+        data11 = json.load(tvl)
+        print(data11)
+        collectionName11.delete_many({})
+        if isinstance(data11, list):
+            collectionName11.insert_many(data11)  
+        else:
+            collectionName11.insert_one(data11)
+
+    with open('ReturnRatioV2_2.json') as returnRatio:
+        data12 = json.load(returnRatio)
+        print(data12)
+        collectionName12.delete_many({})
+        if isinstance(data12, list):
+            collectionName12.insert_many(data12)
+        else:
+            collectionName12.insert_one(data12)
+
 def getDB():
     dbName = connectDB() 
     collectionName1 = dbName["TVL"]
@@ -413,7 +549,7 @@ def main():
     queryData()
     connectDB()
     updateDB()
-    getDB()
+    # getDB()
 
     print("--- %s seconds ---" % (time.time() - start_time))
 

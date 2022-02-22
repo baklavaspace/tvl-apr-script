@@ -1,0 +1,101 @@
+{
+  "farm": [
+    {
+      "pid": 0,
+      "lpTokenPairsymbol": "PGL",
+      "lpName": "BAVA-AVAX",
+      "lpAddresses": {
+        "43114": "0xeB69651B7146F4A42EBC32B03785C3eEddE58Ee7"
+      },
+      "icon": "BAVA-AVAX",
+      "platform": "Pangolin",
+      "allocPoint": 1000,
+      "projectLink": "https://app.pangolin.exchange/#/png/0xe19A1684873faB5Fb694CfD06607100A632fF21c/AVAX/2",
+      "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xe19A1684873faB5Fb694CfD06607100A632fF21c",
+      "farmContract": "https://snowtrace.io/address/0xfd6b09a76f81c83f7e7d792070ab2a05550f887c#code",
+      "total3rdPartyAPR": "891",
+      "token": {
+        "MAINNET": {
+          "chainId": "43114",
+          "address": "0xe19A1684873faB5Fb694CfD06607100A632fF21c",
+          "decimals": "18",
+          "symbol": "BAVA",
+          "name": "Bava Token"
+        }
+      },
+      "quoteToken": {
+        "MAINNET": {
+          "chainId": "43114",
+          "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+          "decimals": "18",
+          "symbol": "AVAX",
+          "name": "Wrapped AVAX"            
+        }
+      }
+    }, {
+      "pid": 1,
+      "lpTokenPairsymbol": "PGL",
+      "lpName": "sAVAX-AVAX",
+      "lpAddresses": {
+        "43114": "0x4E9A38F05c38106C1cf5c145Df24959ec50ff70D"
+      },
+      "icon": "sAVAX-AVAX",
+      "platform": "Pangolin",
+      "allocPoint": 250,
+      "projectLink": "https://app.pangolin.exchange/#/png/0x2b2C81e08f1Af8835a78Bb2A90AE924ACE0eA4bE/AVAX/2",
+      "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0x2b2C81e08f1Af8835a78Bb2A90AE924ACE0eA4bE",
+      "farmContract": "https://snowtrace.io/address/0xfd6b09a76f81c83f7e7d792070ab2a05550f887c#code",
+      "total3rdPartyAPR": "20",
+      "token": {
+        "MAINNET": {
+          "chainId": "43114",
+          "address": "0x2b2C81e08f1Af8835a78Bb2A90AE924ACE0eA4bE",
+          "decimals": "18",
+          "symbol": "sAVAX",
+          "name": "Staked AVAX"
+        }
+      },
+      "quoteToken": {
+        "MAINNET": {
+          "chainId": "43114",
+          "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+          "decimals": "18",
+          "symbol": "AVAX",
+          "name": "Wrapped AVAX"            
+        }
+      }
+    }, {
+      "pid": 2,
+      "lpTokenPairsymbol": "PGL",
+      "lpName": "USDC-USDC.e",
+      "lpAddresses": {
+        "43114": "0x8a9c36BC3CEd5ECce703A4dA8032218Dfe72fE86"
+      },
+      "icon": "USDC-USDC.e",
+      "platform": "Pangolin",
+      "allocPoint": 250,
+      "projectLink": "https://app.pangolin.exchange/#/png/0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/2",
+      "getLPLink": "https://app.pangolin.exchange/#/add/0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+      "farmContract": "https://snowtrace.io/address/0xfd6b09a76f81c83f7e7d792070ab2a05550f887c#code",
+      "total3rdPartyAPR": "9",
+      "token": {
+        "MAINNET": {
+          "chainId": "43114",
+          "address": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+          "decimals": "6",
+          "symbol": "USDC",
+          "name": "USD Coin"
+        }
+      },
+      "quoteToken": {
+        "MAINNET": {
+          "chainId": "43114",
+          "address": "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+          "decimals": "6",
+          "symbol": "USDC.e",
+          "name": "USD Coin"            
+        }
+      }
+    }
+  ]
+}
