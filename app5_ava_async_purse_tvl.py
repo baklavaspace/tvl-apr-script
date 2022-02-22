@@ -454,7 +454,7 @@ def updateDB():
             collectionName8.insert_one(data8)
 
     with open('TVLV2_2.json') as tvl:
-        data9 = json.load(apr)
+        data9 = json.load(tvl)
         print(data9)
         collectionName9.delete_many({})
         if isinstance(data9, list):
@@ -463,7 +463,7 @@ def updateDB():
             collectionName9.insert_one(data9)
 
     with open('APRV2_2.json') as apr:
-        data10 = json.load(apyDaily)
+        data10 = json.load(apr)
         print(data10)
         collectionName10.delete_many({})
         if isinstance(data10, list):
@@ -472,7 +472,7 @@ def updateDB():
             collectionName10.insert_one(data10)
 
     with open('APYDailyV2_2.json') as apyDaily:
-        data11 = json.load(tvl)
+        data11 = json.load(apyDaily)
         print(data11)
         collectionName11.delete_many({})
         if isinstance(data11, list):
