@@ -24,28 +24,29 @@ print(web3.isConnected())
 print(web3.eth.blockNumber)
 latestBlk = web3.eth.blockNumber
 
+full_path = os.getcwd()
 # Load BAVAABI data
-bavaJson = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/abi/'+'Bava.json')
+bavaJson = open(full_path+'/abi/'+'Bava.json')
 bavaAbi = json.load(bavaJson)
 
 # Load LpTokenABI data
-lpJson = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/abi/'+'LpToken.json')
+lpJson = open(full_path+'/abi/'+'LpToken.json')
 lpAbi = json.load(lpJson)
 
 # Load bavaMasterFarmAbi data
-bavaMasterFarmJson = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/abi/'+'BavaMasterFarm.json')
+bavaMasterFarmJson = open(full_path+'/abi/'+'BavaMasterFarm.json')
 bavaMasterFarmAbi = json.load(bavaMasterFarmJson)
-bavaMasterFarmV1Json = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/abi/'+'BavaMasterFarmV1.json')
+bavaMasterFarmV1Json = open(full_path+'/abi/'+'BavaMasterFarmV1.json')
 bavaMasterFarmV1Abi = json.load(bavaMasterFarmV1Json)
-bavaMasterFarmV2_2Json = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/abi/'+'BavaMasterFarmV2_2.json')
+bavaMasterFarmV2_2Json = open(full_path+'/abi/'+'BavaMasterFarmV2_2.json')
 bavaMasterFarmV2_2Abi = json.load(bavaMasterFarmV2_2Json)
 
 # Load Pool data
-farmJson = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/farm/'+'farm.json')
+farmJson = open(full_path+'/farm/'+'farm.json')
 farm = json.load(farmJson)
-farmV1Json = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/farm/'+'farmV1.json')
+farmV1Json = open(full_path+'/farm/'+'farmV1.json')
 farmV1 = json.load(farmV1Json)
-farmV2_2Json = open('/Users/cheekeatlim/Desktop/PundiX Project/tokenScannerFinal/Csv_way/TVL_APR/avalanche/farm/'+'farmV2_2.json')
+farmV2_2Json = open(full_path+'/farm/'+'farmV2_2.json')
 farmV2_2 = json.load(farmV2_2Json)
 
 bavaPGL = '0xeB69651B7146F4A42EBC32B03785C3eEddE58Ee7'
