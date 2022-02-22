@@ -161,7 +161,7 @@ def queryData():
         else:
             tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
 
-        apr = ((28000 * 365 * 682 * event["allocPoint"] * web3.fromWei(rewardPerBlock, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPoint)) * 100
+        apr = ((28000 * 365 * 645 * event["allocPoint"] * web3.fromWei(rewardPerBlock, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPoint)) * 100
         apyDaily = ((1 + apr/36500)**365 -1) * 100
         apyWeekly = ((1 + apr/5200)**52 -1) * 100
         apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -209,7 +209,7 @@ def queryData():
             apyDaily = ""
             apyMonthly = ""
         else:
-            apr = ((28000 * 365 * 682 * event["allocPoint"] * web3.fromWei(rewardPerBlockV1, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV1)) * 100
+            apr = ((28000 * 365 * 645 * event["allocPoint"] * web3.fromWei(rewardPerBlockV1, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV1)) * 100
             apyDaily = ((1 + apr/36500)**365 -1) * 100
             apyWeekly = ((1 + apr/5200)**52 -1) * 100
             apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -244,6 +244,8 @@ def queryData():
             tokenAPrice = BAVAPrice
         elif event["token"]["MAINNET"]["symbol"] == "AVAX" :
             tokenAPrice = AVAXPrice
+        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenAPrice = AVAXPrice
         elif event["token"]["MAINNET"]["symbol"] == "PNG" :
             tokenAPrice = PNGPrice
         elif (event["token"]["MAINNET"]["symbol"] == "USDT.e") :
@@ -251,6 +253,8 @@ def queryData():
         elif (event["token"]["MAINNET"]["symbol"] == "WETH.e") :
             tokenAPrice = WETHPrice
         elif (event["token"]["MAINNET"]["symbol"] == "USDC.e") :
+            tokenAPrice = USDCPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
             tokenAPrice = USDCPrice * 1000000000000
         elif (event["token"]["MAINNET"]["symbol"] == "JOE") :
             tokenAPrice = JOEPrice
@@ -261,6 +265,8 @@ def queryData():
             tokenBPrice = BAVAPrice
         if event["quoteToken"]["MAINNET"]["symbol"] == "AVAX" :
             tokenBPrice = AVAXPrice
+        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenAPrice = AVAXPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "PNG" :
             tokenBPrice = PNGPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "USDT.e" :
@@ -269,6 +275,8 @@ def queryData():
             tokenBPrice = WETHPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "USDC.e" :
             tokenBPrice = USDCPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
+            tokenAPrice = USDCPrice * 1000000000000
         elif event["quoteToken"]["MAINNET"]["symbol"] == "JOE" :
             tokenBPrice = JOEPrice
         elif (event["quoteToken"]["MAINNET"]["symbol"] == "QI") :
@@ -285,7 +293,7 @@ def queryData():
             apyDaily = ""
             apyMonthly = ""
         else:
-            apr = ((28000 * 365 * 682 * event["allocPoint"] * web3.fromWei(rewardPerBlockV2_2, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV2_2)) * 100
+            apr = ((28000 * 365 * 645 * event["allocPoint"] * web3.fromWei(rewardPerBlockV2_2, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV2_2)) * 100
             apyDaily = ((1 + apr/36500)**365 -1) * 100
             apyWeekly = ((1 + apr/5200)**52 -1) * 100
             apyMonthly = ((1 + apr/1200)**12 -1) * 100
