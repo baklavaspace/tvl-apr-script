@@ -105,9 +105,13 @@ def queryData():
     totalAllocPoint = bavaMasterFarmContract.functions.totalAllocPoint().call()
     totalAllocPointV1 = bavaMasterFarmContractV1.functions.totalAllocPoint().call()
     totalAllocPointV2_2 = bavaMasterFarmContractV2_2.functions.totalAllocPoint().call()
-    
+    poolLength = bavaMasterFarmContract.functions.poolLength().call()
+    poolLengthV1 = bavaMasterFarmContractV1.functions.poolLength().call()
+    poolLengthV2_2 = bavaMasterFarmContractV2_2.functions.poolLength().call()
 
-    for event in farm["farm"]:
+    for x in range(poolLength):
+        print(farm["farm"][x]["lpAddresses"]["43114"])
+        event = farm["farm"][x]
         lpContract = web3.eth.contract(address=event["lpAddresses"]["43114"], abi=lpAbi["abi"])
         lpTokenA = web3.eth.contract(address=event["token"]["MAINNET"]["address"], abi=lpAbi["abi"])
         lpTokenB = web3.eth.contract(address=event["quoteToken"]["MAINNET"]["address"], abi=lpAbi["abi"])
@@ -125,6 +129,8 @@ def queryData():
             tokenAPrice = BAVAPrice
         elif event["token"]["MAINNET"]["symbol"] == "AVAX" :
             tokenAPrice = AVAXPrice
+        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenAPrice = AVAXPrice
         elif event["token"]["MAINNET"]["symbol"] == "PNG" :
             tokenAPrice = PNGPrice
         elif (event["token"]["MAINNET"]["symbol"] == "USDT.e") :
@@ -132,6 +138,8 @@ def queryData():
         elif (event["token"]["MAINNET"]["symbol"] == "WETH.e") :
             tokenAPrice = WETHPrice
         elif (event["token"]["MAINNET"]["symbol"] == "USDC.e") :
+            tokenAPrice = USDCPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
             tokenAPrice = USDCPrice * 1000000000000
         elif (event["token"]["MAINNET"]["symbol"] == "JOE") :
             tokenAPrice = JOEPrice
@@ -142,6 +150,8 @@ def queryData():
             tokenBPrice = BAVAPrice
         if event["quoteToken"]["MAINNET"]["symbol"] == "AVAX" :
             tokenBPrice = AVAXPrice
+        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenAPrice = AVAXPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "PNG" :
             tokenBPrice = PNGPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "USDT.e" :
@@ -150,6 +160,8 @@ def queryData():
             tokenBPrice = WETHPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "USDC.e" :
             tokenBPrice = USDCPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
+            tokenAPrice = USDCPrice * 1000000000000
         elif event["quoteToken"]["MAINNET"]["symbol"] == "JOE" :
             tokenBPrice = JOEPrice
         elif (event["quoteToken"]["MAINNET"]["symbol"] == "QI") :
@@ -176,7 +188,9 @@ def queryData():
         apyArray.append(apyDaily)
         returnRatioArray.append(returnRatio)
 
-    for event in farmV1["farm"]:
+    for x in range(poolLengthV1):
+        print(farmV1["farm"][x]["lpAddresses"]["43114"])
+        event = farmV1["farm"][x]
         lpContract = web3.eth.contract(address=event["lpAddresses"]["43114"], abi=lpAbi["abi"])
         lpTokenA = web3.eth.contract(address=event["token"]["MAINNET"]["address"], abi=lpAbi["abi"])
         lpTokenB = web3.eth.contract(address=event["quoteToken"]["MAINNET"]["address"], abi=lpAbi["abi"])
@@ -191,12 +205,44 @@ def queryData():
         if event["token"]["MAINNET"]["symbol"] == "BAVA" :
             tokenAPrice = BAVAPrice
         elif event["token"]["MAINNET"]["symbol"] == "AVAX" :
-            tokenAPrice = AVAXPrice 
+            tokenAPrice = AVAXPrice
+        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenAPrice = AVAXPrice
+        elif event["token"]["MAINNET"]["symbol"] == "PNG" :
+            tokenAPrice = PNGPrice
+        elif (event["token"]["MAINNET"]["symbol"] == "USDT.e") :
+            tokenAPrice = USDTPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "WETH.e") :
+            tokenAPrice = WETHPrice
+        elif (event["token"]["MAINNET"]["symbol"] == "USDC.e") :
+            tokenAPrice = USDCPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
+            tokenAPrice = USDCPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "JOE") :
+            tokenAPrice = JOEPrice
+        elif (event["token"]["MAINNET"]["symbol"] == "QI") :
+            tokenAPrice = QIPrice    
 
         if event["quoteToken"]["MAINNET"]["symbol"] == "BAVA" :
             tokenBPrice = BAVAPrice
         if event["quoteToken"]["MAINNET"]["symbol"] == "AVAX" :
             tokenBPrice = AVAXPrice
+        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenAPrice = AVAXPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "PNG" :
+            tokenBPrice = PNGPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "USDT.e" :
+            tokenBPrice = USDTPrice * 1000000000000
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "WETH.e" :
+            tokenBPrice = WETHPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "USDC.e" :
+            tokenBPrice = USDCPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
+            tokenAPrice = USDCPrice * 1000000000000
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "JOE" :
+            tokenBPrice = JOEPrice
+        elif (event["quoteToken"]["MAINNET"]["symbol"] == "QI") :
+            tokenBPrice = QIPrice 
 
         lpTokenValue = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
         if event["lpTokenPairsymbol"] == "XJOE" or event["lpTokenPairsymbol"] == "PNG" :
@@ -222,8 +268,9 @@ def queryData():
         bavaaprArray.append(bavaapr)
         bavaapyArray.append(bavaapyDaily)
 
-
-    for event in farmV2_2["farm"]:
+    for x in range(poolLengthV2_2):
+        print(farmV2_2["farm"][x]["lpAddresses"]["43114"])
+        event = farmV2_2["farm"][x]
         lpContract = web3.eth.contract(address=event["lpAddresses"]["43114"], abi=lpAbi["abi"])
         lpTokenA = web3.eth.contract(address=event["token"]["MAINNET"]["address"], abi=lpAbi["abi"])
         lpTokenB = web3.eth.contract(address=event["quoteToken"]["MAINNET"]["address"], abi=lpAbi["abi"])
@@ -558,7 +605,7 @@ def main():
     queryData()
     connectDB()
     updateDB()
-    # getDB()
+    getDB()
 
     print("--- %s seconds ---" % (time.time() - start_time))
 
