@@ -110,7 +110,6 @@ def queryData():
     poolLengthV2_2 = bavaMasterFarmContractV2_2.functions.poolLength().call()
 
     for x in range(poolLength):
-        print(farm["farm"][x]["lpAddresses"]["43114"])
         event = farm["farm"][x]
         lpContract = web3.eth.contract(address=event["lpAddresses"]["43114"], abi=lpAbi["abi"])
         lpTokenA = web3.eth.contract(address=event["token"]["MAINNET"]["address"], abi=lpAbi["abi"])
@@ -189,7 +188,6 @@ def queryData():
         returnRatioArray.append(returnRatio)
 
     for x in range(poolLengthV1):
-        print(farmV1["farm"][x]["lpAddresses"]["43114"])
         event = farmV1["farm"][x]
         lpContract = web3.eth.contract(address=event["lpAddresses"]["43114"], abi=lpAbi["abi"])
         lpTokenA = web3.eth.contract(address=event["token"]["MAINNET"]["address"], abi=lpAbi["abi"])
@@ -256,6 +254,7 @@ def queryData():
             apyMonthly = ""
         else:
             apr = ((28000 * 365 * 645 * event["allocPoint"] * web3.fromWei(rewardPerBlockV1, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV1)) * 100
+            print(apr)
             apyDaily = ((1 + apr/36500)**365 -1) * 100
             apyWeekly = ((1 + apr/5200)**52 -1) * 100
             apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -269,7 +268,6 @@ def queryData():
         bavaapyArray.append(bavaapyDaily)
 
     for x in range(poolLengthV2_2):
-        print(farmV2_2["farm"][x]["lpAddresses"]["43114"])
         event = farmV2_2["farm"][x]
         lpContract = web3.eth.contract(address=event["lpAddresses"]["43114"], abi=lpAbi["abi"])
         lpTokenA = web3.eth.contract(address=event["token"]["MAINNET"]["address"], abi=lpAbi["abi"])
@@ -434,7 +432,6 @@ def updateDB():
     collectionName10 = dbName["APRV2_2"]
     collectionName11 = dbName["APYDailyV2_2"]
     collectionName12 = dbName["ReturnRatioV2_2"]
-    print("start")
 
     with open('TVL.json') as tvl:
         data1 = json.load(tvl)
