@@ -9,7 +9,7 @@
       },
       "icon": "BAVA-AVAX",
       "platform": "Baklava",
-      "allocPoint": 1000,
+      "allocPoint": 0,
       "projectLink": "https://baklava.space/menu/",
       "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xe19A1684873faB5Fb694CfD06607100A632fF21c",
       "farmContract": "https://snowtrace.io/address/0x221C6774CF60277b36D21a57A31154EC96299d50#code",
@@ -67,13 +67,13 @@
     }, {
       "pid": 2,
       "lpTokenPairsymbol": "JLP",
-      "lpName": "BAVA-USDC",
+      "lpName": "BAVA-USDC.e",
       "lpAddresses": {
         "43114": "0x2C3601Fe09C23DF8BeB8216298D1502C985e376f"
       },
-      "icon": "BAVA-AVAX",
+      "icon": "BAVA-USDC.e",
       "platform": "Trader Joe",
-      "allocPoint": 1000,
+      "allocPoint": 2000,
       "projectLink": "https://baklava.space/traderjoe/",
       "getLPLink": "https://traderjoexyz.com/pool/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/0xe19a1684873fab5fb694cfd06607100a632ff21c#/",
       "total3rdPartyAPR": "10.54",
