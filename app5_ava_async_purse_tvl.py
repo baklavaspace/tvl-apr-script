@@ -605,7 +605,7 @@ def main():
     queryData()
     connectDB()
     updateDB()
-    getDB()
+    # getDB()
 
     print("--- %s seconds ---" % (time.time() - start_time))
 
