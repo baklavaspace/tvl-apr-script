@@ -14,7 +14,7 @@
       "projectLink": "https://app.pangolin.exchange/#/png/0xe19A1684873faB5Fb694CfD06607100A632fF21c/AVAX/2",
       "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xe19A1684873faB5Fb694CfD06607100A632fF21c",
       "farmContract": "https://snowtrace.io/address/0xfd6b09a76f81c83f7e7d792070ab2a05550f887c#code",
-      "total3rdPartyAPR": "891",
+      "total3rdPartyAPR": "663",
       "token": {
         "MAINNET": {
           "chainId": "43114",
