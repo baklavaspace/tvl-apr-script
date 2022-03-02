@@ -4,6 +4,7 @@
       "pid": 0,
       "lpTokenPairsymbol": "PGL",
       "lpName": "BAVA-AVAX",
+      "status": "",
       "lpAddresses": {
         "43114": "0xeB69651B7146F4A42EBC32B03785C3eEddE58Ee7"
       },
@@ -36,6 +37,7 @@
       "pid": 1,
       "lpTokenPairsymbol": "PGL",
       "lpName": "sAVAX-AVAX",
+      "status": "",
       "lpAddresses": {
         "43114": "0x4E9A38F05c38106C1cf5c145Df24959ec50ff70D"
       },
@@ -68,6 +70,7 @@
       "pid": 2,
       "lpTokenPairsymbol": "PGL",
       "lpName": "USDC-USDC.e",
+      "status": "",
       "lpAddresses": {
         "43114": "0x8a9c36BC3CEd5ECce703A4dA8032218Dfe72fE86"
       },

@@ -4,12 +4,13 @@
       "pid": 0,
       "lpTokenPairsymbol": "JLP",
       "lpName": "AVAX-JOE",
+      "status": "(Archived)",
       "lpAddresses": {
         "43114": "0x454E67025631C065d3cFAD6d71E6892f74487a15"
       },
       "icon": "JOE",
       "platform": "Trader Joe",
-      "allocPoint": 1000,
+      "allocPoint": 0,
       "projectLink": "https://traderjoexyz.com/farm/0x454E67025631C065d3cFAD6d71E6892f74487a15-0x188bED1968b795d5c9022F6a0bb5931Ac4c18F00",
       "getLPLink": "https://traderjoexyz.com/pool/0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd/AVAX",
       "total3rdPartyAPR": "57.45",
@@ -35,15 +36,16 @@
       "pid": 1,
       "lpTokenPairsymbol": "XJOE",
       "lpName": "XJOE",
+      "status": "(Archived)",
       "lpAddresses": {
         "43114": "0x57319d41F71E81F3c65F2a47CA4e001EbAFd4F33"
       },
       "icon": "JOE",
       "platform": "Trader Joe",
-      "allocPoint": 1000,
+      "allocPoint": 0,
       "projectLink": "https://traderjoexyz.com/stake",
       "getLPLink": "https://traderjoexyz.com/trade?outputCurrency=0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd",
-      "total3rdPartyAPR": "39.46",
+      "total3rdPartyAPR": "0",
       "token": {
         "MAINNET": {
           "chainId": "43114",
@@ -66,6 +68,7 @@
       "pid": 2,
       "lpTokenPairsymbol": "JLP",
       "lpName": "WETH.e-AVAX",
+      "status": "",
       "lpAddresses": {
         "43114": "0xFE15c2695F1F920da45C30AAE47d11dE51007AF9"
       },
@@ -97,6 +100,7 @@
       "pid": 3,
       "lpTokenPairsymbol": "PGL",
       "lpName": "USDC.e-USDT.e",
+      "status": "",
       "lpAddresses": {
         "43114": "0xc13E562d92F7527c4389Cd29C67DaBb0667863eA"
       },
@@ -128,6 +132,7 @@
       "pid": 4,
       "lpTokenPairsymbol": "PNG",
       "lpName": "PNG",
+      "status": "",
       "lpAddresses": {
         "43114": "0x60781C2586D68229fde47564546784ab3fACA982"
       },
@@ -159,6 +164,7 @@
       "pid": 5,
       "lpTokenPairsymbol": "PGL",
       "lpName": "AVAX-WETH.e",
+      "status": "",
       "lpAddresses": {
         "43114": "0x7c05d54fc5CB6e4Ad87c6f5db3b807C94bB89c52"
       },
@@ -190,6 +196,7 @@
       "pid": 6,
       "lpTokenPairsymbol": "PGL",
       "lpName": "AVAX-PNG",
+      "status": "",
       "lpAddresses": {
         "43114": "0xd7538cABBf8605BdE1f4901B47B8D42c61DE0367"
       },
@@ -221,6 +228,7 @@
       "pid": 7,
       "lpTokenPairsymbol": "PGL",
       "lpName": "AVAX-USDT.e",
+      "status": "",
       "lpAddresses": {
         "43114": "0xe28984e1EE8D431346D32BeC9Ec800Efb643eef4"
       },
@@ -252,6 +260,7 @@
       "pid": 8,
       "lpTokenPairsymbol": "PGL",
       "lpName": "AVAX-USDC.e",
+      "status": "",
       "lpAddresses": {
         "43114": "0xbd918Ed441767fe7924e99F6a0E0B568ac1970D9"
       },
@@ -283,6 +292,7 @@
       "pid": 9,
       "lpTokenPairsymbol": "JLP",
       "lpName": "USDC.e-AVAX",
+      "status": "",
       "lpAddresses": {
         "43114": "0xA389f9430876455C36478DeEa9769B7Ca4E3DDB1"
       },
@@ -314,6 +324,7 @@
       "pid": 10,
       "lpTokenPairsymbol": "JLP",
       "lpName": "AVAX-USDT.e",
+      "status": "",
       "lpAddresses": {
         "43114": "0xeD8CBD9F0cE3C6986b22002F03c6475CEb7a6256"
       },
@@ -345,12 +356,13 @@
       "pid": 11,
       "lpTokenPairsymbol": "JLP",
       "lpName": "Joe-USDT.e",
+      "status": "(Archived)",
       "lpAddresses": {
         "43114": "0x1643de2efB8e35374D796297a9f95f64C082a8ce"
       },
       "icon": "Joe-USDT.e",
       "platform": "Trader Joe",
-      "allocPoint": 1000,
+      "allocPoint": 0,
       "projectLink": "https://traderjoexyz.com/farm/0x1643de2efB8e35374D796297a9f95f64C082a8ce-0xd6a4F121CA35509aF06A0Be99093d08462f53052",
       "getLPLink": "https://traderjoexyz.com/pool/0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd/0xc7198437980c041c805a1edcba50c1ce5db95118",
       "total3rdPartyAPR": "0",
@@ -376,6 +388,7 @@
       "pid": 12,
       "lpTokenPairsymbol": "PGL",
       "lpName": "QI-AVAX",
+      "status": "",
       "lpAddresses": {
         "43114": "0xE530dC2095Ef5653205CF5ea79F8979a7028065c"
       },
