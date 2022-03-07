@@ -40,6 +40,10 @@ bavaMasterFarmV1Json = open(full_path+'/abi/'+'BavaMasterFarmV1.json')
 bavaMasterFarmV1Abi = json.load(bavaMasterFarmV1Json)
 bavaMasterFarmV2_2Json = open(full_path+'/abi/'+'BavaMasterFarmV2_2.json')
 bavaMasterFarmV2_2Abi = json.load(bavaMasterFarmV2_2Json)
+bavaMasterFarmV2_3Json = open(full_path+'/abi/'+'BavaMasterFarmV2_3.json')
+bavaMasterFarmV2_3Abi = json.load(bavaMasterFarmV2_3Json)
+bavaCompoundPoolJson = open(full_path+'/abi/'+'BavaCompoundPool.json')
+bavaCompoundPoolAbi = json.load(bavaCompoundPoolJson)
 
 # Load Pool data
 farmJson = open(full_path+'/farm/'+'farm.json')
@@ -48,6 +52,8 @@ farmV1Json = open(full_path+'/farm/'+'farmV1.json')
 farmV1 = json.load(farmV1Json)
 farmV2_2Json = open(full_path+'/farm/'+'farmV2_2.json')
 farmV2_2 = json.load(farmV2_2Json)
+farmV2_3Json = open(full_path+'/farm/'+'farmV2_3.json')
+farmV2_3 = json.load(farmV2_3Json)
 
 bavaPGL = '0xeB69651B7146F4A42EBC32B03785C3eEddE58Ee7'
 bavaAddress = '0xe19A1684873faB5Fb694CfD06607100A632fF21c'
@@ -61,6 +67,8 @@ bavaMasterFarmV1 = "0x221C6774CF60277b36D21a57A31154EC96299d50"
 bavaMasterFarmContractV1 = web3.eth.contract(address=bavaMasterFarmV1, abi=bavaMasterFarmV1Abi["abi"])
 bavaMasterFarmV2_2 = "0xfD6b09A76f81c83F7E7D792070Ab2A05550F887C"
 bavaMasterFarmContractV2_2 = web3.eth.contract(address=bavaMasterFarmV2_2, abi=bavaMasterFarmV2_2Abi["abi"])
+bavaMasterFarmV2_3 = "0x25Fc2D200F31485A58AE704403316791e65fAB0E"
+bavaMasterFarmContractV2_3 = web3.eth.contract(address=bavaMasterFarmV2_3, abi=bavaMasterFarmV2_3Abi["abi"])
 
 totalSupply = bavaContract.functions.totalSupply().call(block_identifier= 'latest')
 print("......")
@@ -95,6 +103,10 @@ def queryData():
     aprArrayV2_2=[]
     apyArrayV2_2=[]
     returnRatioArrayV2_2=[]
+    tvlArrayV2_3=[]
+    aprArrayV2_3=[]
+    apyArrayV2_3=[]
+    returnRatioArrayV2_3=[]
     bavatvlArray=[]
     bavaaprArray=[]
     bavaapyArray=[]
@@ -102,12 +114,108 @@ def queryData():
     rewardPerBlock = bavaMasterFarmContract.functions.REWARD_PER_BLOCK().call()
     rewardPerBlockV1 = bavaMasterFarmContractV1.functions.REWARD_PER_BLOCK().call()
     rewardPerBlockV2_2 = bavaMasterFarmContractV2_2.functions.REWARD_PER_BLOCK().call()
+    rewardPerBlockV2_3 = bavaMasterFarmContractV2_3.functions.REWARD_PER_BLOCK().call()
+
     totalAllocPoint = bavaMasterFarmContract.functions.totalAllocPoint().call()
     totalAllocPointV1 = bavaMasterFarmContractV1.functions.totalAllocPoint().call()
     totalAllocPointV2_2 = bavaMasterFarmContractV2_2.functions.totalAllocPoint().call()
+    totalAllocPointV2_3 = bavaMasterFarmContractV2_3.functions.totalAllocPoint().call()
     poolLength = bavaMasterFarmContract.functions.poolLength().call()
     poolLengthV1 = bavaMasterFarmContractV1.functions.poolLength().call()
     poolLengthV2_2 = bavaMasterFarmContractV2_2.functions.poolLength().call()
+    poolLengthV2_3 = bavaMasterFarmContractV2_3.functions.poolLength().call()
+
+    for x in range(poolLengthV2_3):
+        event = farmV2_3["farm"][x]
+        poolInfo = bavaMasterFarmContractV2_3.functions.poolInfo(event["pid"]).call()
+        poolAddress = poolInfo[1]
+        poolContract = web3.eth.contract(address=poolAddress, abi=bavaCompoundPoolAbi["abi"])
+        lpContract = web3.eth.contract(address=event["lpAddresses"]["43114"], abi=lpAbi["abi"])
+        lpTokenA = web3.eth.contract(address=event["token"]["MAINNET"]["address"], abi=lpAbi["abi"])
+        lpTokenB = web3.eth.contract(address=event["quoteToken"]["MAINNET"]["address"], abi=lpAbi["abi"])
+
+        lpReceiptInContract = poolContract.functions.totalSupply().call()
+        lpTokenInContract = (poolContract.functions.poolInfo().call())[1]
+
+        if lpReceiptInContract == 0 :
+            returnRatio = 1
+        else:
+            returnRatio = lpTokenInContract/lpReceiptInContract
+
+        lpTokenTSupply = lpContract.functions.totalSupply().call()
+        lpTokenABalanceContract = lpTokenA.functions.balanceOf(event["lpAddresses"]["43114"]).call()
+        lpTokenBBalanceContract = lpTokenB.functions.balanceOf(event["lpAddresses"]["43114"]).call()
+
+        if event["token"]["MAINNET"]["symbol"] == "BAVA" :
+            tokenAPrice = BAVAPrice
+        elif event["token"]["MAINNET"]["symbol"] == "AVAX" :
+            tokenAPrice = AVAXPrice
+        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenAPrice = AVAXPrice
+        elif event["token"]["MAINNET"]["symbol"] == "PNG" :
+            tokenAPrice = PNGPrice
+        elif (event["token"]["MAINNET"]["symbol"] == "USDT.e") :
+            tokenAPrice = USDTPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "WETH.e") :
+            tokenAPrice = WETHPrice
+        elif (event["token"]["MAINNET"]["symbol"] == "USDC.e") :
+            tokenAPrice = USDCPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
+            tokenAPrice = USDCPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "JOE") :
+            tokenAPrice = JOEPrice
+        elif (event["token"]["MAINNET"]["symbol"] == "QI") :
+            tokenAPrice = QIPrice    
+
+        if event["quoteToken"]["MAINNET"]["symbol"] == "BAVA" :
+            tokenBPrice = BAVAPrice
+        if event["quoteToken"]["MAINNET"]["symbol"] == "AVAX" :
+            tokenBPrice = AVAXPrice
+        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenAPrice = AVAXPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "PNG" :
+            tokenBPrice = PNGPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "USDT.e" :
+            tokenBPrice = USDTPrice * 1000000000000
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "WETH.e" :
+            tokenBPrice = WETHPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "USDC.e" :
+            tokenBPrice = USDCPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
+            tokenAPrice = USDCPrice * 1000000000000
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "JOE" :
+            tokenBPrice = JOEPrice
+        elif (event["quoteToken"]["MAINNET"]["symbol"] == "QI") :
+            tokenBPrice = QIPrice 
+
+        lpTokenValue = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
+        print(lpTokenValue)
+        if event["lpTokenPairsymbol"] == "XJOE" or event["lpTokenPairsymbol"] == "PNG" :
+            tvl = web3.fromWei(tokenAPrice * lpTokenInContract, 'ether')
+        else:
+            tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
+
+        if tvl == 0 :
+            apr = ""
+            apyDaily = ""
+            apyMonthly = ""
+        else:
+            apr = ((28000 * 365 * 591 * event["allocPoint"] * web3.fromWei(rewardPerBlockV2_3, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV2_3)) * 100
+            apyDaily = ((1 + apr/36500)**365 -1) * 100
+            apyWeekly = ((1 + apr/5200)**52 -1) * 100
+            apyMonthly = ((1 + apr/1200)**12 -1) * 100
+
+        tvlV2_3 = {"tvl":str(tvl)}
+        aprV2_3 = {"apr":str(apr)}
+        apyDailyV2_3 = {"apyDaily":str(apyDaily)}
+        returnRatioV2_3 = {"returnRatio":str(returnRatio)}
+
+        tvlArrayV2_3.append(tvlV2_3)
+        aprArrayV2_3.append(aprV2_3)
+        apyArrayV2_3.append(apyDailyV2_3)
+        returnRatioArrayV2_3.append(returnRatioV2_3)
+
+
 
     for x in range(poolLength):
         event = farm["farm"][x]
@@ -172,7 +280,7 @@ def queryData():
         else:
             tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
 
-        apr = ((28000 * 365 * 645 * event["allocPoint"] * web3.fromWei(rewardPerBlock, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPoint)) * 100
+        apr = ((28000 * 365 * 591 * event["allocPoint"] * web3.fromWei(rewardPerBlock, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPoint)) * 100
         apyDaily = ((1 + apr/36500)**365 -1) * 100
         apyWeekly = ((1 + apr/5200)**52 -1) * 100
         apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -253,8 +361,7 @@ def queryData():
             apyDaily = ""
             apyMonthly = ""
         else:
-            apr = ((28000 * 365 * 645 * event["allocPoint"] * web3.fromWei(rewardPerBlockV1, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV1)) * 100
-            print(apr)
+            apr = ((28000 * 365 * 591 * event["allocPoint"] * web3.fromWei(rewardPerBlockV1, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV1)) * 100
             apyDaily = ((1 + apr/36500)**365 -1) * 100
             apyWeekly = ((1 + apr/5200)**52 -1) * 100
             apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -338,7 +445,7 @@ def queryData():
             apyDaily = ""
             apyMonthly = ""
         else:
-            apr = ((28000 * 365 * 645 * event["allocPoint"] * web3.fromWei(rewardPerBlockV2_2, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV2_2)) * 100
+            apr = ((28000 * 365 * 591 * event["allocPoint"] * web3.fromWei(rewardPerBlockV2_2, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV2_2)) * 100
             apyDaily = ((1 + apr/36500)**365 -1) * 100
             apyWeekly = ((1 + apr/5200)**52 -1) * 100
             apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -352,6 +459,7 @@ def queryData():
         aprArrayV2_2.append(aprV2_2)
         apyArrayV2_2.append(apyDailyV2_2)
         returnRatioArrayV2_2.append(returnRatioV2_2)
+
 
 # **************************************** Update data ******************************************************
 
@@ -400,10 +508,24 @@ def queryData():
         json.dump(bavaapyFile, bavaapy_file, indent=4)
 
     with open("BAVAPrice.json", 'w') as bava_file:
-        bavaFile = {"bavaPrice":BAVAPrice}
+        bavaFile = {"bavaPrice":(BAVAPrice)}
         json.dump(bavaFile, bava_file, indent=4)
 
-     
+    with open("TVLV2_3.json", 'w') as tvl_file:
+        tvlFile = {"tvl":tvlArrayV2_3}
+        json.dump(tvlFile, tvl_file, indent=4)
+    
+    with open("APRV2_3.json", 'w') as apr_file:
+        aprFile = {"apr":aprArrayV2_3}
+        json.dump((aprFile), apr_file, indent=4)
+
+    with open("APYDailyV2_3.json", 'w') as apy_file:
+        apyFile = {"apyDaily":apyArrayV2_3}
+        json.dump((apyFile), apy_file, indent=4)
+
+    with open("ReturnRatioV2_3.json", 'w') as return_file:
+        returnFile = {"returnRatio":returnRatioArrayV2_3}
+        json.dump(returnFile, return_file, indent=4) 
 
 
 
@@ -432,6 +554,10 @@ def updateDB():
     collectionName10 = dbName["APRV2_2"]
     collectionName11 = dbName["APYDailyV2_2"]
     collectionName12 = dbName["ReturnRatioV2_2"]
+    collectionName13 = dbName["TVLV2_3"]
+    collectionName14 = dbName["APRV2_3"]
+    collectionName15 = dbName["APYDailyV2_3"]
+    collectionName16 = dbName["ReturnRatioV2_3"]
 
     with open('TVL.json') as tvl:
         data1 = json.load(tvl)
@@ -540,6 +666,46 @@ def updateDB():
             collectionName12.insert_many(data12)
         else:
             collectionName12.insert_one(data12)
+
+# dfsd##########################################
+    with open('TVLV2_3.json') as tvl:
+        data13 = json.load(tvl)
+        print(data13)
+        collectionName13.delete_many({})
+        if isinstance(data13, list):
+            collectionName13.insert_many(data13)
+        else:
+            collectionName13.insert_one(data13)
+
+    with open('APRV2_3.json') as apr:
+        data14 = json.load(apr)
+        print(data14)
+        collectionName14.delete_many({})
+        if isinstance(data14, list):
+            collectionName14.insert_many(data14)  
+        else:
+            collectionName14.insert_one(data14)
+
+    with open('APYDailyV2_3.json') as apyDaily:
+        data15 = json.load(apyDaily)
+        print(data15)
+        collectionName15.delete_many({})
+        if isinstance(data15, list):
+            collectionName15.insert_many(data15)  
+        else:
+            collectionName15.insert_one(data15)
+
+    with open('ReturnRatioV2_3.json') as returnRatio:
+        data16 = json.load(returnRatio)
+        print(data16)
+        collectionName16.delete_many({})
+        if isinstance(data16, list):
+            collectionName16.insert_many(data16)
+        else:
+            collectionName16.insert_one(data16)
+
+
+
 
 def getDB():
     dbName = connectDB() 
