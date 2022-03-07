@@ -86,15 +86,28 @@ def queryData():
 # event = proxyContract.events.Transfer().processReceipt(receipt, errors= DISCARD)
     response = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cbaklava%2Cusd-coin%2Ctether%2Cbenqi&vs_currencies=usd")
     responseJson = response.json()
+    tokenPriceArray=[]
 
     AVAXPrice = responseJson["wrapped-avax"]["usd"]
+    tokenPrice = {"avaxPrice":str(AVAXPrice)}
+    tokenPriceArray.append(tokenPrice)
+
     BAVAPrice = responseJson["baklava"]["usd"]
+    tokenPrice = {"bavaPrice":str(BAVAPrice)}
+    tokenPriceArray.append(tokenPrice)
+
     PNGPrice = responseJson["pangolin"]["usd"]
+    tokenPrice = {"pngPrice":str(PNGPrice)}
+    tokenPriceArray.append(tokenPrice)
+
     WETHPrice = responseJson["weth"]["usd"]
     USDTPrice = responseJson["tether"]["usd"]
     USDCPrice = responseJson["usd-coin"]["usd"]
     JOEPrice = responseJson["joe"]["usd"]
     QIPrice = responseJson["benqi"]["usd"]
+
+
+
     tvlArray=[]
     aprArray=[]
     apyArray=[]
@@ -110,6 +123,8 @@ def queryData():
     bavatvlArray=[]
     bavaaprArray=[]
     bavaapyArray=[]
+
+
 
     rewardPerBlock = bavaMasterFarmContract.functions.REWARD_PER_BLOCK().call()
     rewardPerBlockV1 = bavaMasterFarmContractV1.functions.REWARD_PER_BLOCK().call()
@@ -461,6 +476,7 @@ def queryData():
         returnRatioArrayV2_2.append(returnRatioV2_2)
 
 
+
 # **************************************** Update data ******************************************************
 
     with open("TVL.json", 'w') as tvl_file:
@@ -507,9 +523,13 @@ def queryData():
         bavaapyFile = {"apyDaily":bavaapyArray}
         json.dump(bavaapyFile, bavaapy_file, indent=4)
 
-    with open("BAVAPrice.json", 'w') as bava_file:
-        bavaFile = {"bavaPrice":(BAVAPrice)}
-        json.dump(bavaFile, bava_file, indent=4)
+    with open("BAVAPrice.json", 'w') as bavaPrice_file:
+        bavaPriceFile = {"bavaPrice":BAVAPrice}
+        json.dump(bavaPriceFile, bavaPrice_file, indent=4)
+
+    with open("TokenPrice.json", 'w') as tokenPrice_file:
+        tokenPriceFile = {"tokenPrice":(tokenPriceArray)}
+        json.dump(tokenPriceFile, tokenPrice_file, indent=4)
 
     with open("TVLV2_3.json", 'w') as tvl_file:
         tvlFile = {"tvl":tvlArrayV2_3}
@@ -558,6 +578,7 @@ def updateDB():
     collectionName14 = dbName["APRV2_3"]
     collectionName15 = dbName["APYDailyV2_3"]
     collectionName16 = dbName["ReturnRatioV2_3"]
+    collectionName17 = dbName["TokenPrice"]
 
     with open('TVL.json') as tvl:
         data1 = json.load(tvl)
@@ -704,7 +725,14 @@ def updateDB():
         else:
             collectionName16.insert_one(data16)
 
-
+    with open("TokenPrice.json") as tokenPrice:
+        data17 = json.load(tokenPrice)
+        print(data17)
+        collectionName17.delete_many({})
+        if isinstance(data17, list):
+            collectionName17.insert_many(data17)  
+        else:
+            collectionName17.insert_one(data17)
 
 
 def getDB():
