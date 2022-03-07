@@ -1,0 +1,38 @@
+{
+    "farm": [
+      {
+        "pid": 0,
+        "lpTokenPairsymbol": "PGL",
+        "lpName": "AVAX-USDT.e",
+        "status": "",
+        "lpAddresses": {
+          "43114": "0xe28984e1EE8D431346D32BeC9Ec800Efb643eef4"
+        },
+        "icon": "AVAX-USDT.e",
+        "platform": "Pangolin",
+        "allocPoint": 1000,
+        "projectLink": "https://app.pangolin.exchange/#/png/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/AVAX/2",
+        "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
+        "farmContract": "https://snowtrace.io/address/0x62d8ec77dac6315b70ed6930c18813e5f7e11b93#code",
+        "total3rdPartyAPR": "35",
+        "token": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+            "decimals": "18",
+            "symbol": "AVAX",
+            "name": "Wrapped AVAX"
+          }
+        },
+        "quoteToken": {
+          "MAINNET": {
+            "chainId": "43114",
+            "address": "0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
+            "decimals": "6",
+            "symbol": "USDT.e",
+            "name": "Tether USD"            
+          }
+        }
+      }
+    ]
+  }
