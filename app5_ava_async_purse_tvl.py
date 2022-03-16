@@ -84,7 +84,7 @@ mongoDBPW = os.getenv("MONGODB_PASSWORD")
 def queryData():
 # receipt = web3.eth.get_transaction_receipt("0x59c4f19ea4a6af4876f617419b812248bae8c5d915db5b6cc67ded5ede7ff593")   # or use tx_hash deifined on above command line
 # event = proxyContract.events.Transfer().processReceipt(receipt, errors= DISCARD)
-    response = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cbaklava%2Cusd-coin%2Ctether%2Cbenqi&vs_currencies=usd")
+    response = requests.get("https://api.coingecko.com/api/v3/simple/price?ids=joe%2Cwrapped-avax%2Cpangolin%2Cweth%2Cbaklava%2Cusd-coin%2Ctether%2Cbenqi%2Cterra-luna&vs_currencies=usd")
     responseJson = response.json()
     tokenPriceArray=[]
 
@@ -100,13 +100,21 @@ def queryData():
     tokenPrice = {"pngPrice":str(PNGPrice)}
     tokenPriceArray.append(tokenPrice)
 
+    LUNAPrice = responseJson["terra-luna"]["usd"]
+    tokenPrice = {"lunaPrice":str(LUNAPrice)}
+    tokenPriceArray.append(tokenPrice)
+
     WETHPrice = responseJson["weth"]["usd"]
     USDTPrice = responseJson["tether"]["usd"]
     USDCPrice = responseJson["usd-coin"]["usd"]
+
     JOEPrice = responseJson["joe"]["usd"]
+    tokenPrice = {"joePrice":str(JOEPrice)}
+    tokenPriceArray.append(tokenPrice)
+
     QIPrice = responseJson["benqi"]["usd"]
-
-
+    tokenPrice = {"qiPrice":str(QIPrice)}
+    tokenPriceArray.append(tokenPrice)
 
     tvlArray=[]
     aprArray=[]
