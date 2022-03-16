@@ -14,7 +14,7 @@
       "projectLink": "https://app.pangolin.exchange/#/png/0xe19A1684873faB5Fb694CfD06607100A632fF21c/AVAX/2",
       "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xe19A1684873faB5Fb694CfD06607100A632fF21c",
       "farmContract": "https://snowtrace.io/address/0xfd6b09a76f81c83f7e7d792070ab2a05550f887c#code",
-      "total3rdPartyAPR": "663",
+      "total3rdPartyAPR": "169",
       "token": {
         "MAINNET": {
           "chainId": "43114",
@@ -47,7 +47,7 @@
       "projectLink": "https://app.pangolin.exchange/#/png/0x2b2C81e08f1Af8835a78Bb2A90AE924ACE0eA4bE/AVAX/2",
       "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0x2b2C81e08f1Af8835a78Bb2A90AE924ACE0eA4bE",
       "farmContract": "https://snowtrace.io/address/0xfd6b09a76f81c83f7e7d792070ab2a05550f887c#code",
-      "total3rdPartyAPR": "20",
+      "total3rdPartyAPR": "10",
       "token": {
         "MAINNET": {
           "chainId": "43114",
@@ -80,7 +80,7 @@
       "projectLink": "https://app.pangolin.exchange/#/png/0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/2",
       "getLPLink": "https://app.pangolin.exchange/#/add/0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
       "farmContract": "https://snowtrace.io/address/0xfd6b09a76f81c83f7e7d792070ab2a05550f887c#code",
-      "total3rdPartyAPR": "9",
+      "total3rdPartyAPR": "5",
       "token": {
         "MAINNET": {
           "chainId": "43114",
