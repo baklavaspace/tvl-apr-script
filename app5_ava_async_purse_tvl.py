@@ -223,7 +223,7 @@ def queryData():
             apyDaily = ""
             apyMonthly = ""
         else:
-            apr = ((28000 * 365 * 591 * event["allocPoint"] * web3.fromWei(rewardPerBlockV2_3, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV2_3)) * 100
+            apr = ((28000 * 365 * 510 * event["allocPoint"] * web3.fromWei(rewardPerBlockV2_3, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV2_3)) * 100
             apyDaily = ((1 + apr/36500)**365 -1) * 100
             apyWeekly = ((1 + apr/5200)**52 -1) * 100
             apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -303,7 +303,7 @@ def queryData():
         else:
             tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
 
-        apr = ((28000 * 365 * 591 * event["allocPoint"] * web3.fromWei(rewardPerBlock, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPoint)) * 100
+        apr = ((28000 * 365 * 510 * event["allocPoint"] * web3.fromWei(rewardPerBlock, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPoint)) * 100
         apyDaily = ((1 + apr/36500)**365 -1) * 100
         apyWeekly = ((1 + apr/5200)**52 -1) * 100
         apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -384,7 +384,7 @@ def queryData():
             apyDaily = ""
             apyMonthly = ""
         else:
-            apr = ((28000 * 365 * 591 * event["allocPoint"] * web3.fromWei(rewardPerBlockV1, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV1)) * 100
+            apr = ((28000 * 365 * 510 * event["allocPoint"] * web3.fromWei(rewardPerBlockV1, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV1)) * 100
             apyDaily = ((1 + apr/36500)**365 -1) * 100
             apyWeekly = ((1 + apr/5200)**52 -1) * 100
             apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -468,7 +468,7 @@ def queryData():
             apyDaily = ""
             apyMonthly = ""
         else:
-            apr = ((28000 * 365 * 591 * event["allocPoint"] * web3.fromWei(rewardPerBlockV2_2, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV2_2)) * 100
+            apr = ((28000 * 365 * 510 * event["allocPoint"] * web3.fromWei(rewardPerBlockV2_2, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV2_2)) * 100
             apyDaily = ((1 + apr/36500)**365 -1) * 100
             apyWeekly = ((1 + apr/5200)**52 -1) * 100
             apyMonthly = ((1 + apr/1200)**12 -1) * 100
