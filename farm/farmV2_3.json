@@ -214,7 +214,7 @@
       },
       "icon": "BAVA-AVAX",
       "platform": "Pangolin",
-      "allocPoint": 80000,
+      "allocPoint": 1000,
       "projectLink": "https://app.pangolin.exchange/#/png/0xe19A1684873faB5Fb694CfD06607100A632fF21c/AVAX/2",
       "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xe19A1684873faB5Fb694CfD06607100A632fF21c",
       "farmContract": "https://snowtrace.io/address/0xF6E0A64a177228c9646d867246B6cABC1E80c8dc#code",
@@ -316,7 +316,7 @@
       },
       "icon": "PNG",
       "platform": "Pangolin",
-      "allocPoint": 250,
+      "allocPoint": 500,
       "projectLink": "https://app.pangolin.exchange/#/stake/0/0x60781C2586D68229fde47564546784ab3fACA982",
       "getLPLink": "https://app.pangolin.exchange/#/swap?inputCurrency=0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7&outputCurrency=0x60781C2586D68229fde47564546784ab3fACA982",
       "farmContract": "https://snowtrace.io/address/0x4Ec05b8a6cf887F06e70e9C8a7Aaa244228b2833#code",
@@ -337,6 +337,39 @@
           "decimals": "18",
           "symbol": "PNG",
           "name": "Pangolin"          
+        }
+      }
+    }, {
+      "pid": 10,
+      "lpTokenPairsymbol": "DMM-LP",
+      "lpName": "USDC.e-USDC",
+      "status": "",
+      "lpAddresses": {
+        "43114": "0xD87cD5aa7EfdC4De73EF8c7166D4d1DAA37e2330"
+      },
+      "icon": "DMM-LP",
+      "platform": "KyberSwap",
+      "allocPoint": 100,
+      "projectLink": "https://kyberswap.com/#/farms",
+      "getLPLink": "https://kyberswap.com/#/add/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E/0xd87cd5aa7efdc4de73ef8c7166d4d1daa37e2330",
+      "farmContract": "https://snowtrace.io/address/0x52E1Df8A3c7a2Ef0FbA01c23A5633324fc06f9fE#code",
+      "total3rdPartyAPR": "10",
+      "token": {
+        "MAINNET": {
+          "chainId": "43114",
+          "address": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+          "decimals": "6",
+          "symbol": "USDC",
+          "name": "USD Coin"
+        }
+      },
+      "quoteToken": {
+        "MAINNET": {
+          "chainId": "43114",
+          "address": "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+          "decimals": "6",
+          "symbol": "USDC.e",
+          "name": "USD Coin"            
         }
       }
     }
