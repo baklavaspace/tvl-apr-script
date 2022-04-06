@@ -321,6 +321,7 @@
       "getLPLink": "https://app.pangolin.exchange/#/swap?inputCurrency=0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7&outputCurrency=0x60781C2586D68229fde47564546784ab3fACA982",
       "farmContract": "https://snowtrace.io/address/0x4Ec05b8a6cf887F06e70e9C8a7Aaa244228b2833#code",
       "total3rdPartyAPR": "6",
+      "bonusReward":[],
       "token": {
         "MAINNET": {
           "chainId": "43114",
@@ -349,11 +350,12 @@
       },
       "icon": "DMM-LP",
       "platform": "KyberSwap",
-      "allocPoint": 100,
+      "allocPoint": 1000,
       "projectLink": "https://kyberswap.com/#/farms",
       "getLPLink": "https://kyberswap.com/#/add/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E/0xd87cd5aa7efdc4de73ef8c7166d4d1daa37e2330",
       "farmContract": "https://snowtrace.io/address/0x52E1Df8A3c7a2Ef0FbA01c23A5633324fc06f9fE#code",
-      "total3rdPartyAPR": "10",
+      "total3rdPartyAPR": "12",
+      "bonusReward":["AVAX"],
       "token": {
         "MAINNET": {
           "chainId": "43114",
