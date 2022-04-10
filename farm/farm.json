@@ -13,7 +13,7 @@
       "allocPoint": 0,
       "projectLink": "https://traderjoexyz.com/farm/0x454E67025631C065d3cFAD6d71E6892f74487a15-0x188bED1968b795d5c9022F6a0bb5931Ac4c18F00",
       "getLPLink": "https://traderjoexyz.com/pool/0x6e84a6216eA6dACC71eE8E6b0a5B7322EEbC0fDd/AVAX",
-      "total3rdPartyAPR": "57.45",
+      "total3rdPartyAPR": "0",
       "token": {
         "MAINNET": {
           "chainId": "43114",
@@ -109,7 +109,7 @@
       "allocPoint": 0,
       "projectLink": "https://app.pangolin.exchange/#/png/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/2",
       "getLPLink": "https://app.pangolin.exchange/#/add/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
-      "total3rdPartyAPR": "3",
+      "total3rdPartyAPR": "0",
       "token": {
         "MAINNET": {
           "chainId": "43114",
@@ -141,7 +141,7 @@
       "allocPoint": 0,
       "projectLink": "https://app.pangolin.exchange/#/stake/0/0x60781C2586D68229fde47564546784ab3fACA982",
       "getLPLink": "https://app.pangolin.exchange/#/swap?inputCurrency=0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7&outputCurrency=0x60781C2586D68229fde47564546784ab3fACA982",
-      "total3rdPartyAPR": "29",
+      "total3rdPartyAPR": "0",
       "token": {
         "MAINNET": {
           "chainId": "43114",
@@ -173,7 +173,7 @@
       "allocPoint": 0,
       "projectLink": "https://app.pangolin.exchange/#/png/0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB/AVAX/2",
       "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB",
-      "total3rdPartyAPR": "16",
+      "total3rdPartyAPR": "0",
       "token": {
         "MAINNET": {
           "chainId": "",
@@ -205,7 +205,7 @@
       "allocPoint": 0,
       "projectLink": "https://app.pangolin.exchange/#/png/0x60781C2586D68229fde47564546784ab3fACA982/AVAX/2",
       "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0x60781C2586D68229fde47564546784ab3fACA982",
-      "total3rdPartyAPR": "22",
+      "total3rdPartyAPR": "0",
       "token": {
         "MAINNET": {
           "chainId": "43114",
@@ -237,7 +237,7 @@
       "allocPoint": 0,
       "projectLink": "https://app.pangolin.exchange/#/png/AVAX/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/2",
       "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
-      "total3rdPartyAPR": "35",
+      "total3rdPartyAPR": "0",
       "token": {
         "MAINNET": {
           "chainId": "43114",
@@ -269,7 +269,7 @@
       "allocPoint": 0,
       "projectLink": "https://app.pangolin.exchange/#/png/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/AVAX/2",
       "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
-      "total3rdPartyAPR": "30",
+      "total3rdPartyAPR": "0",
       "token": {
         "MAINNET": {
           "chainId": "43114",
@@ -397,7 +397,7 @@
       "allocPoint": 0,
       "projectLink": "https://app.pangolin.exchange/#/png/0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5/AVAX/2",
       "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5",
-      "total3rdPartyAPR": "63",
+      "total3rdPartyAPR": "0",
       "token": {
         "MAINNET": {
           "chainId": "43114",
@@ -411,7 +411,7 @@
         "MAINNET": {
           "chainId": "43114",
           "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
-          "decimals": "18",
+          "decimals": "38",
           "symbol": "AVAX",
           "name": "AVAX Token"            
         }
