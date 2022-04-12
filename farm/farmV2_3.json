@@ -248,7 +248,7 @@
       },
       "icon": "sAVAX-AVAX",
       "platform": "Pangolin",
-      "allocPoint": 500,
+      "allocPoint": 1000,
       "projectLink": "https://app.pangolin.exchange/#/png/0x2b2C81e08f1Af8835a78Bb2A90AE924ACE0eA4bE/AVAX/2",
       "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0x2b2C81e08f1Af8835a78Bb2A90AE924ACE0eA4bE",
       "farmContract": "https://snowtrace.io/address/0x2811D861777C8f81581ec84784AB53aF68Dc3e9F#code",
