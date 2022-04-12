@@ -133,7 +133,6 @@ def queryData():
     bavaapyArray=[]
 
 
-
     rewardPerBlock = bavaMasterFarmContract.functions.REWARD_PER_BLOCK().call()
     rewardPerBlockV1 = bavaMasterFarmContractV1.functions.REWARD_PER_BLOCK().call()
     rewardPerBlockV2_2 = bavaMasterFarmContractV2_2.functions.REWARD_PER_BLOCK().call()
@@ -212,7 +211,6 @@ def queryData():
             tokenBPrice = QIPrice 
 
         lpTokenValue = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
-        print(lpTokenValue)
         if event["lpTokenPairsymbol"] == "XJOE" or event["lpTokenPairsymbol"] == "PNG" :
             tvl = web3.fromWei(tokenAPrice * lpTokenInContract, 'ether')
         else:
@@ -223,7 +221,7 @@ def queryData():
             apyDaily = ""
             apyMonthly = ""
         else:
-            apr = ((28000 * 365 * 510 * event["allocPoint"] * web3.fromWei(rewardPerBlockV2_3, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV2_3)) * 100
+            apr = ((28000 * 365 * 464 * event["allocPoint"] * web3.fromWei(rewardPerBlockV2_3, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV2_3)) * 100
             apyDaily = ((1 + apr/36500)**365 -1) * 100
             apyWeekly = ((1 + apr/5200)**52 -1) * 100
             apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -303,7 +301,7 @@ def queryData():
         else:
             tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
 
-        apr = ((28000 * 365 * 510 * event["allocPoint"] * web3.fromWei(rewardPerBlock, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPoint)) * 100
+        apr = ((28000 * 365 * 464 * event["allocPoint"] * web3.fromWei(rewardPerBlock, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPoint)) * 100
         apyDaily = ((1 + apr/36500)**365 -1) * 100
         apyWeekly = ((1 + apr/5200)**52 -1) * 100
         apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -378,13 +376,13 @@ def queryData():
             tvl = web3.fromWei(tokenAPrice * lpTokenInContract, 'ether')
         else:
             tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
-        
+        print(tvl)
         if tvl == 0 :
             apr = ""
             apyDaily = ""
             apyMonthly = ""
         else:
-            apr = ((28000 * 365 * 510 * event["allocPoint"] * web3.fromWei(rewardPerBlockV1, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV1)) * 100
+            apr = ((28000 * 365 * 464 * event["allocPoint"] * web3.fromWei(rewardPerBlockV1, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV1)) * 100
             apyDaily = ((1 + apr/36500)**365 -1) * 100
             apyWeekly = ((1 + apr/5200)**52 -1) * 100
             apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -468,7 +466,7 @@ def queryData():
             apyDaily = ""
             apyMonthly = ""
         else:
-            apr = ((28000 * 365 * 510 * event["allocPoint"] * web3.fromWei(rewardPerBlockV2_2, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV2_2)) * 100
+            apr = ((28000 * 365 * 464 * event["allocPoint"] * web3.fromWei(rewardPerBlockV2_2, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointV2_2)) * 100
             apyDaily = ((1 + apr/36500)**365 -1) * 100
             apyWeekly = ((1 + apr/5200)**52 -1) * 100
             apyMonthly = ((1 + apr/1200)**12 -1) * 100
@@ -590,7 +588,6 @@ def updateDB():
 
     with open('TVL.json') as tvl:
         data1 = json.load(tvl)
-        print(data1)
         collectionName1.delete_many({})
         if isinstance(data1, list):
             collectionName1.insert_many(data1)  
@@ -599,7 +596,6 @@ def updateDB():
     
     with open('APR.json') as apr:
         data2 = json.load(apr)
-        print(data2)
         collectionName2.delete_many({})
         if isinstance(data2, list):
             collectionName2.insert_many(data2)  
@@ -608,7 +604,6 @@ def updateDB():
 
     with open('APYDaily.json') as apyDaily:
         data3 = json.load(apyDaily)
-        print(data3)
         collectionName3.delete_many({})
         if isinstance(data3, list):
             collectionName3.insert_many(data3)  
@@ -617,7 +612,6 @@ def updateDB():
 
     with open("BAVAPrice.json") as bavaPrice:
         data4 = json.load(bavaPrice)
-        print(data4)
         collectionName4.delete_many({})
         if isinstance(data4, list):
             collectionName4.insert_many(data4)  
@@ -626,7 +620,6 @@ def updateDB():
 
     with open('BAVATVL.json') as tvl:
         data5 = json.load(tvl)
-        print(data5)
         collectionName5.delete_many({})
         if isinstance(data5, list):
             collectionName5.insert_many(data5)  
@@ -635,7 +628,6 @@ def updateDB():
     
     with open('BAVAAPR.json') as apr:
         data6 = json.load(apr)
-        print(data6)
         collectionName6.delete_many({})
         if isinstance(data6, list):
             collectionName6.insert_many(data6)  
@@ -644,7 +636,6 @@ def updateDB():
 
     with open('BAVAAPYDaily.json') as apyDaily:
         data7 = json.load(apyDaily)
-        print(data7)
         collectionName7.delete_many({})
         if isinstance(data7, list):
             collectionName7.insert_many(data7)  
@@ -653,7 +644,6 @@ def updateDB():
 
     with open('ReturnRatio.json') as returnRatio:
         data8 = json.load(returnRatio)
-        print(data8)
         collectionName8.delete_many({})
         if isinstance(data8, list):
             collectionName8.insert_many(data8)  
@@ -662,7 +652,6 @@ def updateDB():
 
     with open('TVLV2_2.json') as tvl:
         data9 = json.load(tvl)
-        print(data9)
         collectionName9.delete_many({})
         if isinstance(data9, list):
             collectionName9.insert_many(data9)  
@@ -671,7 +660,6 @@ def updateDB():
 
     with open('APRV2_2.json') as apr:
         data10 = json.load(apr)
-        print(data10)
         collectionName10.delete_many({})
         if isinstance(data10, list):
             collectionName10.insert_many(data10)  
@@ -680,7 +668,6 @@ def updateDB():
 
     with open('APYDailyV2_2.json') as apyDaily:
         data11 = json.load(apyDaily)
-        print(data11)
         collectionName11.delete_many({})
         if isinstance(data11, list):
             collectionName11.insert_many(data11)  
@@ -689,7 +676,6 @@ def updateDB():
 
     with open('ReturnRatioV2_2.json') as returnRatio:
         data12 = json.load(returnRatio)
-        print(data12)
         collectionName12.delete_many({})
         if isinstance(data12, list):
             collectionName12.insert_many(data12)
@@ -699,7 +685,6 @@ def updateDB():
 # dfsd##########################################
     with open('TVLV2_3.json') as tvl:
         data13 = json.load(tvl)
-        print(data13)
         collectionName13.delete_many({})
         if isinstance(data13, list):
             collectionName13.insert_many(data13)
@@ -708,7 +693,6 @@ def updateDB():
 
     with open('APRV2_3.json') as apr:
         data14 = json.load(apr)
-        print(data14)
         collectionName14.delete_many({})
         if isinstance(data14, list):
             collectionName14.insert_many(data14)  
@@ -717,7 +701,6 @@ def updateDB():
 
     with open('APYDailyV2_3.json') as apyDaily:
         data15 = json.load(apyDaily)
-        print(data15)
         collectionName15.delete_many({})
         if isinstance(data15, list):
             collectionName15.insert_many(data15)  
@@ -726,7 +709,6 @@ def updateDB():
 
     with open('ReturnRatioV2_3.json') as returnRatio:
         data16 = json.load(returnRatio)
-        print(data16)
         collectionName16.delete_many({})
         if isinstance(data16, list):
             collectionName16.insert_many(data16)
@@ -735,7 +717,6 @@ def updateDB():
 
     with open("TokenPrice.json") as tokenPrice:
         data17 = json.load(tokenPrice)
-        print(data17)
         collectionName17.delete_many({})
         if isinstance(data17, list):
             collectionName17.insert_many(data17)  
@@ -804,7 +785,7 @@ def main():
     queryData()
     connectDB()
     updateDB()
-    # getDB()
+    getDB()
 
     print("--- %s seconds ---" % (time.time() - start_time))
 
