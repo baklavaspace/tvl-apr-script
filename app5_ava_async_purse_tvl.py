@@ -572,7 +572,7 @@ def updateDB():
     collectionName1 = dbName["TVL"]
     collectionName2 = dbName["APR"]
     collectionName3 = dbName["APYDaily"]
-    collectionName4 = dbName["BAVAPrice"]
+    # collectionName4 = dbName["BAVAPrice"]
     collectionName5 = dbName["BAVATVL"]
     collectionName6 = dbName["BAVAAPR"]
     collectionName7 = dbName["BAVAAPYDaily"]
@@ -585,7 +585,7 @@ def updateDB():
     collectionName14 = dbName["APRV2_3"]
     collectionName15 = dbName["APYDailyV2_3"]
     collectionName16 = dbName["ReturnRatioV2_3"]
-    collectionName17 = dbName["TokenPrice"]
+    # collectionName17 = dbName["TokenPrice"]
 
     with open('TVL.json') as tvl:
         data1 = json.load(tvl)
@@ -611,13 +611,13 @@ def updateDB():
         else:
             collectionName3.insert_one(data3)
 
-    with open("BAVAPrice.json") as bavaPrice:
-        data4 = json.load(bavaPrice)
-        collectionName4.delete_many({})
-        if isinstance(data4, list):
-            collectionName4.insert_many(data4)  
-        else:
-            collectionName4.insert_one(data4)
+    # with open("BAVAPrice.json") as bavaPrice:
+    #     data4 = json.load(bavaPrice)
+    #     collectionName4.delete_many({})
+    #     if isinstance(data4, list):
+    #         collectionName4.insert_many(data4)  
+    #     else:
+    #         collectionName4.insert_one(data4)
 
     with open('BAVATVL.json') as tvl:
         data5 = json.load(tvl)
@@ -716,13 +716,13 @@ def updateDB():
         else:
             collectionName16.insert_one(data16)
 
-    with open("TokenPrice.json") as tokenPrice:
-        data17 = json.load(tokenPrice)
-        collectionName17.delete_many({})
-        if isinstance(data17, list):
-            collectionName17.insert_many(data17)  
-        else:
-            collectionName17.insert_one(data17)
+    # with open("TokenPrice.json") as tokenPrice:
+    #     data17 = json.load(tokenPrice)
+    #     collectionName17.delete_many({})
+    #     if isinstance(data17, list):
+    #         collectionName17.insert_many(data17)  
+    #     else:
+    #         collectionName17.insert_one(data17)
 
 
 def getDB():
@@ -730,7 +730,7 @@ def getDB():
     collectionName1 = dbName["TVL"]
     collectionName2 = dbName["APR"]
     collectionName3 = dbName["APYDaily"]
-    collectionName4 = dbName["BAVAPrice"]
+    # collectionName4 = dbName["BAVAPrice"]
     collectionName5 = dbName["BAVATVL"]
     collectionName6 = dbName["BAVAAPR"]
     collectionName7 = dbName["BAVAAPYDaily"]
@@ -752,10 +752,10 @@ def getDB():
         apy = data3["apyDaily"]
         print(apy)
 
-    cursor4 = collectionName4.find({})
-    for data4 in cursor4:
-        bavaPrice = data4["bavaPrice"]
-        print(bavaPrice)
+    # cursor4 = collectionName4.find({})
+    # for data4 in cursor4:
+    #     bavaPrice = data4["bavaPrice"]
+    #     print(bavaPrice)
 
     cursor5 = collectionName5.find({})
     for data5 in cursor5:
