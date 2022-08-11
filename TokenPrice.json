@@ -1,22 +1,22 @@
 {
     "tokenPrice": [
         {
-            "avaxPrice": "17.32"
+            "avaxPrice": "29.81"
         },
         {
-            "bavaPrice": "0.061656"
+            "bavaPrice": "0.070737"
         },
         {
-            "pngPrice": "0.03600864"
+            "pngPrice": "0.063331"
         },
         {
-            "lunaPrice": "5.83e-05"
+            "lunaPrice": "9.863e-05"
         },
         {
-            "joePrice": "0.237134"
+            "joePrice": "0.392428"
         },
         {
-            "qiPrice": "0.01242569"
+            "qiPrice": "0.01771183"
         }
     ]
 }
