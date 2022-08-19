@@ -13,10 +13,12 @@ from pymongo import MongoClient
 import os
 from dotenv import load_dotenv
 import urllib.parse 
+import logging
 
 start_time = time.time()
 #Connect Ethereum node 
-avarpc = "https://api.avax.network/ext/bc/C/rpc"
+# avarpc = "https://api.avax.network/ext/bc/C/rpc"
+avarpc = "https://rpc.ankr.com/avalanche"
 web3 = Web3(Web3.HTTPProvider(avarpc))
 # web3 = Web3(Web3.WebsocketProvider(bscrpc))
 
@@ -121,17 +123,24 @@ def queryData():
     aprArray=[]
     apyArray=[]
     returnRatioArray=[]
+    lpTokenValueArray=[]
+
     tvlArrayV2_2=[]
     aprArrayV2_2=[]
     apyArrayV2_2=[]
     returnRatioArrayV2_2=[]
+    lpTokenValueArrayV2_2=[]
+
     tvlArrayV2_3=[]
     aprArrayV2_3=[]
     apyArrayV2_3=[]
     returnRatioArrayV2_3=[]
+    lpTokenValueArrayV2_3=[]
+
     bavatvlArray=[]
     bavaaprArray=[]
     bavaapyArray=[]
+    bavalpTokenValueArray=[]
 
 
     rewardPerBlock = bavaMasterFarmContract.functions.REWARD_PER_BLOCK().call()
@@ -214,6 +223,7 @@ def queryData():
         lpTokenValue = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
         if event["lpTokenPairsymbol"] == "XJOE" or event["lpTokenPairsymbol"] == "PNG" :
             tvl = web3.fromWei(tokenAPrice * lpTokenInContract, 'ether')
+            lpTokenValue = tokenAPrice
         else:
             tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
 
@@ -231,12 +241,13 @@ def queryData():
         aprV2_3 = {"apr":str(apr)}
         apyDailyV2_3 = {"apyDaily":str(apyDaily)}
         returnRatioV2_3 = {"returnRatio":str(returnRatio)}
+        lpTokenValueV2_3 = {"lpTokenValue":str(lpTokenValue)}
 
         tvlArrayV2_3.append(tvlV2_3)
         aprArrayV2_3.append(aprV2_3)
         apyArrayV2_3.append(apyDailyV2_3)
         returnRatioArrayV2_3.append(returnRatioV2_3)
-
+        lpTokenValueArrayV2_3.append(lpTokenValueV2_3)
 
 
     for x in range(poolLength):
@@ -299,6 +310,7 @@ def queryData():
         lpTokenValue = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
         if event["lpTokenPairsymbol"] == "XJOE" or event["lpTokenPairsymbol"] == "PNG" :
             tvl = web3.fromWei(tokenAPrice * lpTokenInContract, 'ether')
+            lpTokenValue = tokenAPrice
         else:
             tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
 
@@ -311,11 +323,13 @@ def queryData():
         apr = {"apr":str(apr)}
         apyDaily = {"apyDaily":str(apyDaily)}
         returnRatio={"returnRatio":str(returnRatio)}
+        lpTokenValue={"lpTokenValue":str(lpTokenValue)}
 
         tvlArray.append(tvl)
         aprArray.append(apr)
         apyArray.append(apyDaily)
         returnRatioArray.append(returnRatio)
+        lpTokenValueArray.append(lpTokenValue)
 
     for x in range(poolLengthV1):
         event = farmV1["farm"][x]
@@ -375,9 +389,10 @@ def queryData():
         lpTokenValue = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
         if event["lpTokenPairsymbol"] == "XJOE" or event["lpTokenPairsymbol"] == "PNG" :
             tvl = web3.fromWei(tokenAPrice * lpTokenInContract, 'ether')
+            lpTokenValue = tokenAPrice
         else:
             tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
-        print(tvl)
+
         if tvl == 0 :
             apr = ""
             apyDaily = ""
@@ -391,10 +406,12 @@ def queryData():
         bavatvl = {"tvl":str(tvl)}
         bavaapr = {"apr":str(apr)}
         bavaapyDaily = {"apyDaily":str(apyDaily)}
+        bavalpTokenValue = {"lpTokenValue":str(lpTokenValue)}
 
         bavatvlArray.append(bavatvl)
         bavaaprArray.append(bavaapr)
         bavaapyArray.append(bavaapyDaily)
+        bavalpTokenValueArray.append(bavalpTokenValue)
 
     for x in range(poolLengthV2_2):
         event = farmV2_2["farm"][x]
@@ -459,6 +476,7 @@ def queryData():
         lpTokenValue = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
         if event["lpTokenPairsymbol"] == "XJOE" or event["lpTokenPairsymbol"] == "PNG" :
             tvl = web3.fromWei(tokenAPrice * lpTokenInContract, 'ether')
+            lpTokenValue = tokenAPrice
         else:
             tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
 
@@ -476,13 +494,13 @@ def queryData():
         aprV2_2 = {"apr":str(apr)}
         apyDailyV2_2 = {"apyDaily":str(apyDaily)}
         returnRatioV2_2 = {"returnRatio":str(returnRatio)}
+        lpTokenValueV2_2 = {"lpTokenValue":str(lpTokenValue)}
 
         tvlArrayV2_2.append(tvlV2_2)
         aprArrayV2_2.append(aprV2_2)
         apyArrayV2_2.append(apyDailyV2_2)
         returnRatioArrayV2_2.append(returnRatioV2_2)
-
-
+        lpTokenValueArrayV2_2.append(lpTokenValueV2_2)
 
 # **************************************** Update data ******************************************************
 
@@ -530,14 +548,6 @@ def queryData():
         bavaapyFile = {"apyDaily":bavaapyArray}
         json.dump(bavaapyFile, bavaapy_file, indent=4)
 
-    with open("BAVAPrice.json", 'w') as bavaPrice_file:
-        bavaPriceFile = {"bavaPrice":BAVAPrice}
-        json.dump(bavaPriceFile, bavaPrice_file, indent=4)
-
-    with open("TokenPrice.json", 'w') as tokenPrice_file:
-        tokenPriceFile = {"tokenPrice":(tokenPriceArray)}
-        json.dump(tokenPriceFile, tokenPrice_file, indent=4)
-
     with open("TVLV2_3.json", 'w') as tvl_file:
         tvlFile = {"tvl":tvlArrayV2_3}
         json.dump(tvlFile, tvl_file, indent=4)
@@ -554,7 +564,25 @@ def queryData():
         returnFile = {"returnRatio":returnRatioArrayV2_3}
         json.dump(returnFile, return_file, indent=4) 
 
+    with open("LpTokenValue.json", 'w') as lpTokenValue_file:
+        lpTokenValueFile = {"lpTokenValue":lpTokenValueArray}
+        json.dump(lpTokenValueFile, lpTokenValue_file, indent=4) 
 
+    with open("LpTokenValueV2_2.json", 'w') as lpTokenValue_file:
+        lpTokenValueFile = {"lpTokenValue":lpTokenValueArrayV2_2}
+        json.dump(lpTokenValueFile, lpTokenValue_file, indent=4) 
+
+    with open("LpTokenValueV2_3.json", 'w') as lpTokenValue_file:
+        lpTokenValueFile = {"lpTokenValue":lpTokenValueArrayV2_3}
+        json.dump(lpTokenValueFile, lpTokenValue_file, indent=4) 
+
+    with open("BAVALpTokenValue.json", 'w') as lpTokenValue_file:
+        lpTokenValueFile = {"lpTokenValue":bavalpTokenValueArray}
+        json.dump(lpTokenValueFile, lpTokenValue_file, indent=4) 
+
+    with open("AllData.json", 'w') as allData_file:
+        allDataFile = {"TVL":tvlArray, "TVLV2_2":tvlArrayV2_2, "TVLV2_3":tvlArrayV2_3, "Bavatvl":bavatvlArray, "APR":aprArray, "APRV2_2":aprArrayV2_2, "APRV2_3":aprArrayV2_3, "BavaAPR":bavaaprArray, "ApyDaily":apyArray, "ApyDailyV2_2":apyArrayV2_2, "ApyDailyV2_3":apyArrayV2_3, "BavaApyDaily":bavaapyArray, "ReturnRatio":returnRatioArray, "ReturnRatioV2_2":returnRatioArrayV2_2, "ReturnRatioV2_3":returnRatioArrayV2_3, "LpTokenValue":lpTokenValueArray, "LpTokenValueV2_2":lpTokenValueArrayV2_2, "LpTokenValueV2_3":lpTokenValueArrayV2_3, "BavaLpTokenValue":bavalpTokenValueArray }
+        json.dump(allDataFile, allData_file, indent=4) 
 
 ##############################################################################################################
 # Update and Retreive BDL Total and Past 30 Days Amount from MongoDB
@@ -569,160 +597,192 @@ def connectDB():
 
 def updateDB():
     dbName = connectDB()
-    collectionName1 = dbName["TVL"]
-    collectionName2 = dbName["APR"]
-    collectionName3 = dbName["APYDaily"]
-    # collectionName4 = dbName["BAVAPrice"]
-    collectionName5 = dbName["BAVATVL"]
-    collectionName6 = dbName["BAVAAPR"]
-    collectionName7 = dbName["BAVAAPYDaily"]
-    collectionName8 = dbName["ReturnRatio"]
-    collectionName9 = dbName["TVLV2_2"]
-    collectionName10 = dbName["APRV2_2"]
-    collectionName11 = dbName["APYDailyV2_2"]
-    collectionName12 = dbName["ReturnRatioV2_2"]
-    collectionName13 = dbName["TVLV2_3"]
-    collectionName14 = dbName["APRV2_3"]
-    collectionName15 = dbName["APYDailyV2_3"]
-    collectionName16 = dbName["ReturnRatioV2_3"]
-    # collectionName17 = dbName["TokenPrice"]
+    # collectionName1 = dbName["TVL"]
+    # collectionName2 = dbName["APR"]
+    # collectionName3 = dbName["APYDaily"]
+    # collectionName5 = dbName["BAVATVL"]
+    # collectionName6 = dbName["BAVAAPR"]
+    # collectionName7 = dbName["BAVAAPYDaily"]
+    # collectionName8 = dbName["ReturnRatio"]
+    # collectionName9 = dbName["TVLV2_2"]
+    # collectionName10 = dbName["APRV2_2"]
+    # collectionName11 = dbName["APYDailyV2_2"]
+    # collectionName12 = dbName["ReturnRatioV2_2"]
+    # collectionName13 = dbName["TVLV2_3"]
+    # collectionName14 = dbName["APRV2_3"]
+    # collectionName15 = dbName["APYDailyV2_3"]
+    # collectionName16 = dbName["ReturnRatioV2_3"]
+    # collectionName17 = dbName["LpTokenValue"]
+    # collectionName18 = dbName["BAVALpTokenValue"]
+    # collectionName19 = dbName["LpTokenValueV2_2"]
+    # collectionName20 = dbName["LpTokenValueV2_3"]
 
-    with open('TVL.json') as tvl:
-        data1 = json.load(tvl)
-        collectionName1.delete_many({})
-        if isinstance(data1, list):
-            collectionName1.insert_many(data1)  
-        else:
-            collectionName1.insert_one(data1)
+    collectionName21 = dbName["All"]
     
-    with open('APR.json') as apr:
-        data2 = json.load(apr)
-        collectionName2.delete_many({})
-        if isinstance(data2, list):
-            collectionName2.insert_many(data2)  
-        else:
-            collectionName2.insert_one(data2)
 
-    with open('APYDaily.json') as apyDaily:
-        data3 = json.load(apyDaily)
-        collectionName3.delete_many({})
-        if isinstance(data3, list):
-            collectionName3.insert_many(data3)  
-        else:
-            collectionName3.insert_one(data3)
-
-    # with open("BAVAPrice.json") as bavaPrice:
-    #     data4 = json.load(bavaPrice)
-    #     collectionName4.delete_many({})
-    #     if isinstance(data4, list):
-    #         collectionName4.insert_many(data4)  
+    # with open('TVL.json') as tvl:
+    #     data1 = json.load(tvl)
+    #     collectionName1.delete_many({})
+    #     if isinstance(data1, list):
+    #         collectionName1.insert_many(data1)  
     #     else:
-    #         collectionName4.insert_one(data4)
-
-    with open('BAVATVL.json') as tvl:
-        data5 = json.load(tvl)
-        collectionName5.delete_many({})
-        if isinstance(data5, list):
-            collectionName5.insert_many(data5)  
-        else:
-            collectionName5.insert_one(data5)
+    #         collectionName1.insert_one(data1)
     
-    with open('BAVAAPR.json') as apr:
-        data6 = json.load(apr)
-        collectionName6.delete_many({})
-        if isinstance(data6, list):
-            collectionName6.insert_many(data6)  
-        else:
-            collectionName6.insert_one(data6)
+    # with open('APR.json') as apr:
+    #     data2 = json.load(apr)
+    #     collectionName2.delete_many({})
+    #     if isinstance(data2, list):
+    #         collectionName2.insert_many(data2)  
+    #     else:
+    #         collectionName2.insert_one(data2)
 
-    with open('BAVAAPYDaily.json') as apyDaily:
-        data7 = json.load(apyDaily)
-        collectionName7.delete_many({})
-        if isinstance(data7, list):
-            collectionName7.insert_many(data7)  
-        else:
-            collectionName7.insert_one(data7)
+    # with open('APYDaily.json') as apyDaily:
+    #     data3 = json.load(apyDaily)
+    #     collectionName3.delete_many({})
+    #     if isinstance(data3, list):
+    #         collectionName3.insert_many(data3)  
+    #     else:
+    #         collectionName3.insert_one(data3)
 
-    with open('ReturnRatio.json') as returnRatio:
-        data8 = json.load(returnRatio)
-        collectionName8.delete_many({})
-        if isinstance(data8, list):
-            collectionName8.insert_many(data8)  
-        else:
-            collectionName8.insert_one(data8)
+    # with open('BAVATVL.json') as tvl:
+    #     data5 = json.load(tvl)
+    #     collectionName5.delete_many({})
+    #     if isinstance(data5, list):
+    #         collectionName5.insert_many(data5)  
+    #     else:
+    #         collectionName5.insert_one(data5)
+    
+    # with open('BAVAAPR.json') as apr:
+    #     data6 = json.load(apr)
+    #     collectionName6.delete_many({})
+    #     if isinstance(data6, list):
+    #         collectionName6.insert_many(data6)  
+    #     else:
+    #         collectionName6.insert_one(data6)
 
-    with open('TVLV2_2.json') as tvl:
-        data9 = json.load(tvl)
-        collectionName9.delete_many({})
-        if isinstance(data9, list):
-            collectionName9.insert_many(data9)  
-        else:
-            collectionName9.insert_one(data9)
+    # with open('BAVAAPYDaily.json') as apyDaily:
+    #     data7 = json.load(apyDaily)
+    #     collectionName7.delete_many({})
+    #     if isinstance(data7, list):
+    #         collectionName7.insert_many(data7)  
+    #     else:
+    #         collectionName7.insert_one(data7)
 
-    with open('APRV2_2.json') as apr:
-        data10 = json.load(apr)
-        collectionName10.delete_many({})
-        if isinstance(data10, list):
-            collectionName10.insert_many(data10)  
-        else:
-            collectionName10.insert_one(data10)
+    # with open('ReturnRatio.json') as returnRatio:
+    #     data8 = json.load(returnRatio)
+    #     collectionName8.delete_many({})
+    #     if isinstance(data8, list):
+    #         collectionName8.insert_many(data8)  
+    #     else:
+    #         collectionName8.insert_one(data8)
 
-    with open('APYDailyV2_2.json') as apyDaily:
-        data11 = json.load(apyDaily)
-        collectionName11.delete_many({})
-        if isinstance(data11, list):
-            collectionName11.insert_many(data11)  
-        else:
-            collectionName11.insert_one(data11)
+    # with open('TVLV2_2.json') as tvl:
+    #     data9 = json.load(tvl)
+    #     collectionName9.delete_many({})
+    #     if isinstance(data9, list):
+    #         collectionName9.insert_many(data9)  
+    #     else:
+    #         collectionName9.insert_one(data9)
 
-    with open('ReturnRatioV2_2.json') as returnRatio:
-        data12 = json.load(returnRatio)
-        collectionName12.delete_many({})
-        if isinstance(data12, list):
-            collectionName12.insert_many(data12)
-        else:
-            collectionName12.insert_one(data12)
+    # with open('APRV2_2.json') as apr:
+    #     data10 = json.load(apr)
+    #     collectionName10.delete_many({})
+    #     if isinstance(data10, list):
+    #         collectionName10.insert_many(data10)  
+    #     else:
+    #         collectionName10.insert_one(data10)
 
-# dfsd##########################################
-    with open('TVLV2_3.json') as tvl:
-        data13 = json.load(tvl)
-        collectionName13.delete_many({})
-        if isinstance(data13, list):
-            collectionName13.insert_many(data13)
-        else:
-            collectionName13.insert_one(data13)
+    # with open('APYDailyV2_2.json') as apyDaily:
+    #     data11 = json.load(apyDaily)
+    #     collectionName11.delete_many({})
+    #     if isinstance(data11, list):
+    #         collectionName11.insert_many(data11)  
+    #     else:
+    #         collectionName11.insert_one(data11)
 
-    with open('APRV2_3.json') as apr:
-        data14 = json.load(apr)
-        collectionName14.delete_many({})
-        if isinstance(data14, list):
-            collectionName14.insert_many(data14)  
-        else:
-            collectionName14.insert_one(data14)
+    # with open('ReturnRatioV2_2.json') as returnRatio:
+    #     data12 = json.load(returnRatio)
+    #     collectionName12.delete_many({})
+    #     if isinstance(data12, list):
+    #         collectionName12.insert_many(data12)
+    #     else:
+    #         collectionName12.insert_one(data12)
 
-    with open('APYDailyV2_3.json') as apyDaily:
-        data15 = json.load(apyDaily)
-        collectionName15.delete_many({})
-        if isinstance(data15, list):
-            collectionName15.insert_many(data15)  
-        else:
-            collectionName15.insert_one(data15)
+    # with open('TVLV2_3.json') as tvl:
+    #     data13 = json.load(tvl)
+    #     collectionName13.delete_many({})
+    #     if isinstance(data13, list):
+    #         collectionName13.insert_many(data13)
+    #     else:
+    #         collectionName13.insert_one(data13)
 
-    with open('ReturnRatioV2_3.json') as returnRatio:
-        data16 = json.load(returnRatio)
-        collectionName16.delete_many({})
-        if isinstance(data16, list):
-            collectionName16.insert_many(data16)
-        else:
-            collectionName16.insert_one(data16)
+    # with open('APRV2_3.json') as apr:
+    #     data14 = json.load(apr)
+    #     collectionName14.delete_many({})
+    #     if isinstance(data14, list):
+    #         collectionName14.insert_many(data14)  
+    #     else:
+    #         collectionName14.insert_one(data14)
 
-    # with open("TokenPrice.json") as tokenPrice:
-    #     data17 = json.load(tokenPrice)
+    # with open('APYDailyV2_3.json') as apyDaily:
+    #     data15 = json.load(apyDaily)
+    #     collectionName15.delete_many({})
+    #     if isinstance(data15, list):
+    #         collectionName15.insert_many(data15)  
+    #     else:
+    #         collectionName15.insert_one(data15)
+
+    # with open('ReturnRatioV2_3.json') as returnRatio:
+    #     data16 = json.load(returnRatio)
+    #     collectionName16.delete_many({})
+    #     if isinstance(data16, list):
+    #         collectionName16.insert_many(data16)
+    #     else:
+    #         collectionName16.insert_one(data16)
+
+    # with open("LpTokenValue.json") as lpTokenValue:
+    #     data17 = json.load(lpTokenValue)
     #     collectionName17.delete_many({})
     #     if isinstance(data17, list):
     #         collectionName17.insert_many(data17)  
     #     else:
     #         collectionName17.insert_one(data17)
+
+    # with open("LpTokenValueV2_2.json") as lpTokenValue:
+    #     data18 = json.load(lpTokenValue)
+    #     collectionName18.delete_many({})
+    #     if isinstance(data17, list):
+    #         collectionName17.insert_many(data18)  
+    #     else:
+    #         collectionName17.insert_one(data18)
+
+    # with open("LpTokenValueV2_3.json") as lpTokenValue:
+    #     data19 = json.load(lpTokenValue)
+    #     collectionName19.delete_many({})
+    #     if isinstance(data19, list):
+    #         collectionName19.insert_many(data19)  
+    #     else:
+    #         collectionName19.insert_one(data19)
+
+    # with open("BAVALpTokenValue.json") as lpTokenValue:
+    #     data20 = json.load(lpTokenValue)
+    #     collectionName20.delete_many({})
+    #     if isinstance(data20, list):
+    #         collectionName20.insert_many(data20)  
+    #     else:
+    #         collectionName20.insert_one(data20)
+
+    with open("AllData.json") as allData:
+        data21 = json.load(allData)
+        collectionName21.delete_many({})
+        if isinstance(data21, list):
+            collectionName21.insert_many(data21)  
+        else:
+            collectionName21.insert_one(data21)
+
+##############################################################################################################
+# Read mongo database
+##############################################################################################################
 
 
 def getDB():
@@ -730,7 +790,7 @@ def getDB():
     collectionName1 = dbName["TVL"]
     collectionName2 = dbName["APR"]
     collectionName3 = dbName["APYDaily"]
-    # collectionName4 = dbName["BAVAPrice"]
+
     collectionName5 = dbName["BAVATVL"]
     collectionName6 = dbName["BAVAAPR"]
     collectionName7 = dbName["BAVAAPYDaily"]
@@ -740,63 +800,69 @@ def getDB():
     cursor1 = collectionName1.find({})
     for data1 in cursor1:
         tvl = data1["tvl"]
-        print(tvl)
 
     cursor2 = collectionName2.find({})
     for data2 in cursor2:
         apr = data2["apr"]
-        print(apr)
         
     cursor3 = collectionName3.find({})
     for data3 in cursor3:
         apy = data3["apyDaily"]
-        print(apy)
-
-    # cursor4 = collectionName4.find({})
-    # for data4 in cursor4:
-    #     bavaPrice = data4["bavaPrice"]
-    #     print(bavaPrice)
 
     cursor5 = collectionName5.find({})
     for data5 in cursor5:
         tvl = data5["tvl"]
-        print(tvl)
 
     cursor6 = collectionName6.find({})
     for data6 in cursor6:
         apr = data6["apr"]
-        print(apr)
         
     cursor7 = collectionName7.find({})
     for data7 in cursor7:
         apy = data7["apyDaily"]
-        print(apy)
 
     cursor8 = collectionName8.find({})
     for data8 in cursor8:
         returnRatio = data8["returnRatio"]
-        print(returnRatio)
+
+# ######################################################################################
+# Build flow function
+# ######################################################################################
+
+def minCheck():
+    try:
+        queryData()
+        connectDB()
+        updateDB()
+        print("done query data")
+    except Exception as e:
+        print("MinCheck Error happen")
+        logging.error(e)
+
+# ######################################################################################
+# Build schedule function
+# ######################################################################################
+
+def scheduleUpdate():
+    schedule.every(3).minutes.do(minCheck)
+
+    while True:
+        schedule.run_pending()
+        time.sleep(1)
 
 # #############################################################################################################
 # Main code
 # #############################################################################################################
 def main():
-    #11732360 (Oct-13-2021 09:01:59 AM +UTC) Purse contract created time
     
     queryData()
     print("done query data")
     connectDB()
     updateDB()
-    getDB()
+    # getDB()
 
     print("--- %s seconds ---" % (time.time() - start_time))
+    scheduleUpdate()
 
 if __name__ == "__main__":     # __name__ is a built-in variable in Python which evaluates to the name of the current module.
     main()
-
-schedule.every(15).minutes.do(queryData)
-schedule.every(15).minutes.do(updateDB)
-
-while True:
-    schedule.run_pending()
-    time.sleep(1)
