@@ -44,8 +44,13 @@ bavaMasterFarmV2_2Json = open(full_path+'/abi/'+'BavaMasterFarmV2_2.json')
 bavaMasterFarmV2_2Abi = json.load(bavaMasterFarmV2_2Json)
 bavaMasterFarmV2_3Json = open(full_path+'/abi/'+'BavaMasterFarmV2_3.json')
 bavaMasterFarmV2_3Abi = json.load(bavaMasterFarmV2_3Json)
+bavaMasterFarmUpgradeableJson = open(full_path+'/abi/'+'BavaMasterFarmUpgradeable.json')
+bavaMasterFarmUpgradeableAbi = json.load(bavaMasterFarmUpgradeableJson)
 bavaCompoundPoolJson = open(full_path+'/abi/'+'BavaCompoundPool.json')
 bavaCompoundPoolAbi = json.load(bavaCompoundPoolJson)
+bavaCompoundVault_VariableUpgradeableJson = open(full_path+'/abi/'+'BavaCompoundVault_VariableUpgradeable.json')
+bavaCompoundVault_VariableUpgradeableAbi = json.load(bavaCompoundVault_VariableUpgradeableJson)
+
 
 # Load Pool data
 farmJson = open(full_path+'/farm/'+'farm.json')
@@ -56,6 +61,8 @@ farmV2_2Json = open(full_path+'/farm/'+'farmV2_2.json')
 farmV2_2 = json.load(farmV2_2Json)
 farmV2_3Json = open(full_path+'/farm/'+'farmV2_3.json')
 farmV2_3 = json.load(farmV2_3Json)
+farmUpgradeableJson = open(full_path+'/farm/'+'farmUpgradeable.json')
+farmUpgradeable = json.load(farmUpgradeableJson)
 
 bavaPGL = '0xeB69651B7146F4A42EBC32B03785C3eEddE58Ee7'
 bavaAddress = '0xe19A1684873faB5Fb694CfD06607100A632fF21c'
@@ -71,10 +78,12 @@ bavaMasterFarmV2_2 = "0xfD6b09A76f81c83F7E7D792070Ab2A05550F887C"
 bavaMasterFarmContractV2_2 = web3.eth.contract(address=bavaMasterFarmV2_2, abi=bavaMasterFarmV2_2Abi["abi"])
 bavaMasterFarmV2_3 = "0x25Fc2D200F31485A58AE704403316791e65fAB0E"
 bavaMasterFarmContractV2_3 = web3.eth.contract(address=bavaMasterFarmV2_3, abi=bavaMasterFarmV2_3Abi["abi"])
+bavaMasterFarmUpgradeable = "0xEB3bb8e88ceD2352B07CC480E4E41F73046C0700"
+bavaMasterFarmContractUpgradeable = web3.eth.contract(address=bavaMasterFarmUpgradeable, abi=bavaMasterFarmUpgradeableAbi["abi"])
 
 totalSupply = bavaContract.functions.totalSupply().call(block_identifier= 'latest')
 print("......")
-bonusMultiplier = 206
+bonusMultiplier = 130
 load_dotenv()
 infuraKey = os.getenv("INFURA_KEY")
 mongoDBUser = os.getenv("MONGODB_USERNAME")
@@ -137,6 +146,12 @@ def queryData():
     returnRatioArrayV2_3=[]
     lpTokenValueArrayV2_3=[]
 
+    tvlArrayUpgradeable=[]
+    aprArrayUpgradeable=[]
+    apyArrayUpgradeable=[]
+    returnRatioArrayUpgradeable=[]
+    lpTokenValueArrayUpgradeable=[]
+
     bavatvlArray=[]
     bavaaprArray=[]
     bavaapyArray=[]
@@ -147,20 +162,119 @@ def queryData():
     rewardPerBlockV1 = bavaMasterFarmContractV1.functions.REWARD_PER_BLOCK().call()
     rewardPerBlockV2_2 = bavaMasterFarmContractV2_2.functions.REWARD_PER_BLOCK().call()
     rewardPerBlockV2_3 = bavaMasterFarmContractV2_3.functions.REWARD_PER_BLOCK().call()
+    rewardPerBlockUpgradeable = bavaMasterFarmContractUpgradeable.functions.getRewardPerBlock().call()
 
     totalAllocPoint = bavaMasterFarmContract.functions.totalAllocPoint().call()
     totalAllocPointV1 = bavaMasterFarmContractV1.functions.totalAllocPoint().call()
     totalAllocPointV2_2 = bavaMasterFarmContractV2_2.functions.totalAllocPoint().call()
     totalAllocPointV2_3 = bavaMasterFarmContractV2_3.functions.totalAllocPoint().call()
+    totalAllocPointUpgradeable = bavaMasterFarmContractUpgradeable.functions.getTotalAllocPoint().call()
+
     poolLength = bavaMasterFarmContract.functions.poolLength().call()
     poolLengthV1 = bavaMasterFarmContractV1.functions.poolLength().call()
     poolLengthV2_2 = bavaMasterFarmContractV2_2.functions.poolLength().call()
     poolLengthV2_3 = bavaMasterFarmContractV2_3.functions.poolLength().call()
+    poolLengthUpgradeable = bavaMasterFarmContractUpgradeable.functions.getPoolLength().call()
+
+    for x in range(poolLengthUpgradeable):
+        event = farmUpgradeable["farm"][x]
+        poolInfo = bavaMasterFarmContractUpgradeable.functions.poolInfo(event["pid"]).call()
+        vaultAddress = poolInfo[1]
+        allocPoint = poolInfo[2]
+        vaultContract = web3.eth.contract(address=vaultAddress, abi=bavaCompoundVault_VariableUpgradeableAbi["abi"])
+        lpContract = web3.eth.contract(address=event["lpAddresses"]["43114"], abi=lpAbi["abi"])
+        lpTokenA = web3.eth.contract(address=event["token"]["MAINNET"]["address"], abi=lpAbi["abi"])
+        lpTokenB = web3.eth.contract(address=event["quoteToken"]["MAINNET"]["address"], abi=lpAbi["abi"])
+        
+
+        lpReceiptInContract = vaultContract.functions.totalSupply().call()
+        lpTokenInContract = (vaultContract.functions.vaultInfo().call())[2]
+
+        if lpReceiptInContract == 0 :
+            returnRatio = 1
+        else:
+            returnRatio = lpTokenInContract/lpReceiptInContract
+
+        lpTokenTSupply = lpContract.functions.totalSupply().call()
+        lpTokenABalanceContract = lpTokenA.functions.balanceOf(event["lpAddresses"]["43114"]).call()
+        lpTokenBBalanceContract = lpTokenB.functions.balanceOf(event["lpAddresses"]["43114"]).call()
+
+        if event["token"]["MAINNET"]["symbol"] == "BAVA" :
+            tokenAPrice = BAVAPrice
+        elif event["token"]["MAINNET"]["symbol"] == "AVAX" :
+            tokenAPrice = AVAXPrice
+        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenAPrice = AVAXPrice
+        elif event["token"]["MAINNET"]["symbol"] == "PNG" :
+            tokenAPrice = PNGPrice
+        elif (event["token"]["MAINNET"]["symbol"] == "USDT.e") :
+            tokenAPrice = USDTPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "WETH.e") :
+            tokenAPrice = WETHPrice
+        elif (event["token"]["MAINNET"]["symbol"] == "USDC.e") :
+            tokenAPrice = USDCPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
+            tokenAPrice = USDCPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "JOE") :
+            tokenAPrice = JOEPrice
+        elif (event["token"]["MAINNET"]["symbol"] == "QI") :
+            tokenAPrice = QIPrice    
+
+        if event["quoteToken"]["MAINNET"]["symbol"] == "BAVA" :
+            tokenBPrice = BAVAPrice
+        if event["quoteToken"]["MAINNET"]["symbol"] == "AVAX" :
+            tokenBPrice = AVAXPrice
+        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenAPrice = AVAXPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "PNG" :
+            tokenBPrice = PNGPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "USDT.e" :
+            tokenBPrice = USDTPrice * 1000000000000
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "WETH.e" :
+            tokenBPrice = WETHPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "USDC.e" :
+            tokenBPrice = USDCPrice * 1000000000000
+        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
+            tokenAPrice = USDCPrice * 1000000000000
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "JOE" :
+            tokenBPrice = JOEPrice
+        elif (event["quoteToken"]["MAINNET"]["symbol"] == "QI") :
+            tokenBPrice = QIPrice 
+
+        lpTokenValue = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
+        if event["lpTokenPairsymbol"] == "XJOE" or event["lpTokenPairsymbol"] == "PNG" :
+            tvl = web3.fromWei(tokenAPrice * lpTokenInContract, 'ether')
+            lpTokenValue = tokenAPrice
+        else:
+            tvl = web3.fromWei(lpTokenValue * lpTokenInContract, 'ether')
+
+        if tvl == 0 :
+            apr = ""
+            apyDaily = ""
+            apyMonthly = ""
+        else:
+            apr = ((28000 * 365 * bonusMultiplier * allocPoint * web3.fromWei(rewardPerBlockUpgradeable, 'ether') * decimal.Decimal(BAVAPrice) ) / (tvl * totalAllocPointUpgradeable)) * 100
+            apyDaily = ((1 + apr/36500)**365 -1) * 100
+            apyWeekly = ((1 + apr/5200)**52 -1) * 100
+            apyMonthly = ((1 + apr/1200)**12 -1) * 100
+
+        tvlUpgradeable = {"tvl":str(tvl)}
+        aprUpgradeable = {"apr":str(apr)}
+        apyDailyUpgradeable = {"apyDaily":str(apyDaily)}
+        returnRatioUpgradeable = {"returnRatio":str(returnRatio)}
+        lpTokenValueUpgradeable = {"lpTokenValue":str(lpTokenValue)}
+
+        tvlArrayUpgradeable.append(tvlUpgradeable)
+        aprArrayUpgradeable.append(aprUpgradeable)
+        apyArrayUpgradeable.append(apyDailyUpgradeable)
+        returnRatioArrayUpgradeable.append(returnRatioUpgradeable)
+        lpTokenValueArrayUpgradeable.append(lpTokenValueUpgradeable)
 
     for x in range(poolLengthV2_3):
         event = farmV2_3["farm"][x]
         poolInfo = bavaMasterFarmContractV2_3.functions.poolInfo(event["pid"]).call()
         poolAddress = poolInfo[1]
+        allocPoint = poolInfo[2]
         poolContract = web3.eth.contract(address=poolAddress, abi=bavaCompoundPoolAbi["abi"])
         lpContract = web3.eth.contract(address=event["lpAddresses"]["43114"], abi=lpAbi["abi"])
         lpTokenA = web3.eth.contract(address=event["token"]["MAINNET"]["address"], abi=lpAbi["abi"])
@@ -581,7 +695,12 @@ def queryData():
         json.dump(lpTokenValueFile, lpTokenValue_file, indent=4) 
 
     with open("AllData.json", 'w') as allData_file:
-        allDataFile = {"TVL":tvlArray, "TVLV2_2":tvlArrayV2_2, "TVLV2_3":tvlArrayV2_3, "Bavatvl":bavatvlArray, "APR":aprArray, "APRV2_2":aprArrayV2_2, "APRV2_3":aprArrayV2_3, "BavaAPR":bavaaprArray, "ApyDaily":apyArray, "ApyDailyV2_2":apyArrayV2_2, "ApyDailyV2_3":apyArrayV2_3, "BavaApyDaily":bavaapyArray, "ReturnRatio":returnRatioArray, "ReturnRatioV2_2":returnRatioArrayV2_2, "ReturnRatioV2_3":returnRatioArrayV2_3, "LpTokenValue":lpTokenValueArray, "LpTokenValueV2_2":lpTokenValueArrayV2_2, "LpTokenValueV2_3":lpTokenValueArrayV2_3, "BavaLpTokenValue":bavalpTokenValueArray }
+        allDataFile = {
+            "TVL":tvlArray, "TVLV2_2":tvlArrayV2_2, "TVLV2_3":tvlArrayV2_3, "TVLUpgradeable":tvlArrayUpgradeable, 
+            "Bavatvl":bavatvlArray, "APR":aprArray, "APRV2_2":aprArrayV2_2, "APRV2_3":aprArrayV2_3, "APRUpgradeable":aprArrayUpgradeable, "BavaAPR":bavaaprArray, 
+            "ApyDaily":apyArray, "ApyDailyV2_2":apyArrayV2_2, "ApyDailyV2_3":apyArrayV2_3, "ApyDailyUpgradeable":apyArrayUpgradeable, "BavaApyDaily":bavaapyArray, 
+            "ReturnRatio":returnRatioArray, "ReturnRatioV2_2":returnRatioArrayV2_2, "ReturnRatioV2_3":returnRatioArrayV2_3, "ReturnRatioUpgradeable":returnRatioArrayUpgradeable, 
+            "LpTokenValue":lpTokenValueArray, "LpTokenValueV2_2":lpTokenValueArrayV2_2, "LpTokenValueV2_3":lpTokenValueArrayV2_3, "LpTokenValueUpgradeable":lpTokenValueArrayUpgradeable, "BavaLpTokenValue":bavalpTokenValueArray }
         json.dump(allDataFile, allData_file, indent=4) 
 
 ##############################################################################################################
@@ -597,180 +716,8 @@ def connectDB():
 
 def updateDB():
     dbName = connectDB()
-    # collectionName1 = dbName["TVL"]
-    # collectionName2 = dbName["APR"]
-    # collectionName3 = dbName["APYDaily"]
-    # collectionName5 = dbName["BAVATVL"]
-    # collectionName6 = dbName["BAVAAPR"]
-    # collectionName7 = dbName["BAVAAPYDaily"]
-    # collectionName8 = dbName["ReturnRatio"]
-    # collectionName9 = dbName["TVLV2_2"]
-    # collectionName10 = dbName["APRV2_2"]
-    # collectionName11 = dbName["APYDailyV2_2"]
-    # collectionName12 = dbName["ReturnRatioV2_2"]
-    # collectionName13 = dbName["TVLV2_3"]
-    # collectionName14 = dbName["APRV2_3"]
-    # collectionName15 = dbName["APYDailyV2_3"]
-    # collectionName16 = dbName["ReturnRatioV2_3"]
-    # collectionName17 = dbName["LpTokenValue"]
-    # collectionName18 = dbName["BAVALpTokenValue"]
-    # collectionName19 = dbName["LpTokenValueV2_2"]
-    # collectionName20 = dbName["LpTokenValueV2_3"]
-
+    
     collectionName21 = dbName["All"]
-    
-
-    # with open('TVL.json') as tvl:
-    #     data1 = json.load(tvl)
-    #     collectionName1.delete_many({})
-    #     if isinstance(data1, list):
-    #         collectionName1.insert_many(data1)  
-    #     else:
-    #         collectionName1.insert_one(data1)
-    
-    # with open('APR.json') as apr:
-    #     data2 = json.load(apr)
-    #     collectionName2.delete_many({})
-    #     if isinstance(data2, list):
-    #         collectionName2.insert_many(data2)  
-    #     else:
-    #         collectionName2.insert_one(data2)
-
-    # with open('APYDaily.json') as apyDaily:
-    #     data3 = json.load(apyDaily)
-    #     collectionName3.delete_many({})
-    #     if isinstance(data3, list):
-    #         collectionName3.insert_many(data3)  
-    #     else:
-    #         collectionName3.insert_one(data3)
-
-    # with open('BAVATVL.json') as tvl:
-    #     data5 = json.load(tvl)
-    #     collectionName5.delete_many({})
-    #     if isinstance(data5, list):
-    #         collectionName5.insert_many(data5)  
-    #     else:
-    #         collectionName5.insert_one(data5)
-    
-    # with open('BAVAAPR.json') as apr:
-    #     data6 = json.load(apr)
-    #     collectionName6.delete_many({})
-    #     if isinstance(data6, list):
-    #         collectionName6.insert_many(data6)  
-    #     else:
-    #         collectionName6.insert_one(data6)
-
-    # with open('BAVAAPYDaily.json') as apyDaily:
-    #     data7 = json.load(apyDaily)
-    #     collectionName7.delete_many({})
-    #     if isinstance(data7, list):
-    #         collectionName7.insert_many(data7)  
-    #     else:
-    #         collectionName7.insert_one(data7)
-
-    # with open('ReturnRatio.json') as returnRatio:
-    #     data8 = json.load(returnRatio)
-    #     collectionName8.delete_many({})
-    #     if isinstance(data8, list):
-    #         collectionName8.insert_many(data8)  
-    #     else:
-    #         collectionName8.insert_one(data8)
-
-    # with open('TVLV2_2.json') as tvl:
-    #     data9 = json.load(tvl)
-    #     collectionName9.delete_many({})
-    #     if isinstance(data9, list):
-    #         collectionName9.insert_many(data9)  
-    #     else:
-    #         collectionName9.insert_one(data9)
-
-    # with open('APRV2_2.json') as apr:
-    #     data10 = json.load(apr)
-    #     collectionName10.delete_many({})
-    #     if isinstance(data10, list):
-    #         collectionName10.insert_many(data10)  
-    #     else:
-    #         collectionName10.insert_one(data10)
-
-    # with open('APYDailyV2_2.json') as apyDaily:
-    #     data11 = json.load(apyDaily)
-    #     collectionName11.delete_many({})
-    #     if isinstance(data11, list):
-    #         collectionName11.insert_many(data11)  
-    #     else:
-    #         collectionName11.insert_one(data11)
-
-    # with open('ReturnRatioV2_2.json') as returnRatio:
-    #     data12 = json.load(returnRatio)
-    #     collectionName12.delete_many({})
-    #     if isinstance(data12, list):
-    #         collectionName12.insert_many(data12)
-    #     else:
-    #         collectionName12.insert_one(data12)
-
-    # with open('TVLV2_3.json') as tvl:
-    #     data13 = json.load(tvl)
-    #     collectionName13.delete_many({})
-    #     if isinstance(data13, list):
-    #         collectionName13.insert_many(data13)
-    #     else:
-    #         collectionName13.insert_one(data13)
-
-    # with open('APRV2_3.json') as apr:
-    #     data14 = json.load(apr)
-    #     collectionName14.delete_many({})
-    #     if isinstance(data14, list):
-    #         collectionName14.insert_many(data14)  
-    #     else:
-    #         collectionName14.insert_one(data14)
-
-    # with open('APYDailyV2_3.json') as apyDaily:
-    #     data15 = json.load(apyDaily)
-    #     collectionName15.delete_many({})
-    #     if isinstance(data15, list):
-    #         collectionName15.insert_many(data15)  
-    #     else:
-    #         collectionName15.insert_one(data15)
-
-    # with open('ReturnRatioV2_3.json') as returnRatio:
-    #     data16 = json.load(returnRatio)
-    #     collectionName16.delete_many({})
-    #     if isinstance(data16, list):
-    #         collectionName16.insert_many(data16)
-    #     else:
-    #         collectionName16.insert_one(data16)
-
-    # with open("LpTokenValue.json") as lpTokenValue:
-    #     data17 = json.load(lpTokenValue)
-    #     collectionName17.delete_many({})
-    #     if isinstance(data17, list):
-    #         collectionName17.insert_many(data17)  
-    #     else:
-    #         collectionName17.insert_one(data17)
-
-    # with open("LpTokenValueV2_2.json") as lpTokenValue:
-    #     data18 = json.load(lpTokenValue)
-    #     collectionName18.delete_many({})
-    #     if isinstance(data17, list):
-    #         collectionName17.insert_many(data18)  
-    #     else:
-    #         collectionName17.insert_one(data18)
-
-    # with open("LpTokenValueV2_3.json") as lpTokenValue:
-    #     data19 = json.load(lpTokenValue)
-    #     collectionName19.delete_many({})
-    #     if isinstance(data19, list):
-    #         collectionName19.insert_many(data19)  
-    #     else:
-    #         collectionName19.insert_one(data19)
-
-    # with open("BAVALpTokenValue.json") as lpTokenValue:
-    #     data20 = json.load(lpTokenValue)
-    #     collectionName20.delete_many({})
-    #     if isinstance(data20, list):
-    #         collectionName20.insert_many(data20)  
-    #     else:
-    #         collectionName20.insert_one(data20)
 
     with open("AllData.json") as allData:
         data21 = json.load(allData)
@@ -844,7 +791,7 @@ def minCheck():
 # ######################################################################################
 
 def scheduleUpdate():
-    schedule.every(3).minutes.do(minCheck)
+    schedule.every(2).minutes.do(minCheck)
 
     while True:
         schedule.run_pending()
