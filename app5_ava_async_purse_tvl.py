@@ -23,8 +23,7 @@ web3 = Web3(Web3.HTTPProvider(avarpc))
 # web3 = Web3(Web3.WebsocketProvider(bscrpc))
 
 print(web3.isConnected())
-print(web3.eth.blockNumber)
-latestBlk = web3.eth.blockNumber
+# latestBlk = web3.eth.blockNumber
 
 full_path = os.getcwd()
 # Load BAVAABI data
@@ -157,7 +156,6 @@ def queryData():
     bavaapyArray=[]
     bavalpTokenValueArray=[]
 
-
     rewardPerBlock = bavaMasterFarmContract.functions.REWARD_PER_BLOCK().call()
     rewardPerBlockV1 = bavaMasterFarmContractV1.functions.REWARD_PER_BLOCK().call()
     rewardPerBlockV2_2 = bavaMasterFarmContractV2_2.functions.REWARD_PER_BLOCK().call()
@@ -178,14 +176,15 @@ def queryData():
 
     for x in range(poolLengthUpgradeable):
         event = farmUpgradeable["farm"][x]
-        poolInfo = bavaMasterFarmContractUpgradeable.functions.poolInfo(event["pid"]).call()
+        poolInfo = bavaMasterFarmContractUpgradeable.functions.poolInfo(x).call()
+        lpToken = poolInfo[0]
         vaultAddress = poolInfo[1]
         allocPoint = poolInfo[2]
+
         vaultContract = web3.eth.contract(address=vaultAddress, abi=bavaCompoundVault_VariableUpgradeableAbi["abi"])
-        lpContract = web3.eth.contract(address=event["lpAddresses"]["43114"], abi=lpAbi["abi"])
+        lpContract = web3.eth.contract(lpToken, abi=lpAbi["abi"])
         lpTokenA = web3.eth.contract(address=event["token"]["MAINNET"]["address"], abi=lpAbi["abi"])
         lpTokenB = web3.eth.contract(address=event["quoteToken"]["MAINNET"]["address"], abi=lpAbi["abi"])
-        
 
         lpReceiptInContract = vaultContract.functions.totalSupply().call()
         lpTokenInContract = (vaultContract.functions.vaultInfo().call())[2]
@@ -196,8 +195,8 @@ def queryData():
             returnRatio = lpTokenInContract/lpReceiptInContract
 
         lpTokenTSupply = lpContract.functions.totalSupply().call()
-        lpTokenABalanceContract = lpTokenA.functions.balanceOf(event["lpAddresses"]["43114"]).call()
-        lpTokenBBalanceContract = lpTokenB.functions.balanceOf(event["lpAddresses"]["43114"]).call()
+        lpTokenABalanceContract = lpTokenA.functions.balanceOf(lpToken).call()
+        lpTokenBBalanceContract = lpTokenB.functions.balanceOf(lpToken).call()
 
         if event["token"]["MAINNET"]["symbol"] == "BAVA" :
             tokenAPrice = BAVAPrice
@@ -219,13 +218,15 @@ def queryData():
             tokenAPrice = JOEPrice
         elif (event["token"]["MAINNET"]["symbol"] == "QI") :
             tokenAPrice = QIPrice    
+        elif (event["token"]["MAINNET"]["symbol"] == "USDt") :
+            tokenAPrice = USDTPrice * 1000000000000   
 
         if event["quoteToken"]["MAINNET"]["symbol"] == "BAVA" :
             tokenBPrice = BAVAPrice
         if event["quoteToken"]["MAINNET"]["symbol"] == "AVAX" :
             tokenBPrice = AVAXPrice
-        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
-            tokenAPrice = AVAXPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenBPrice = AVAXPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "PNG" :
             tokenBPrice = PNGPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "USDT.e" :
@@ -234,12 +235,14 @@ def queryData():
             tokenBPrice = WETHPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "USDC.e" :
             tokenBPrice = USDCPrice * 1000000000000
-        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
-            tokenAPrice = USDCPrice * 1000000000000
+        elif (event["quoteToken"]["MAINNET"]["symbol"] == "USDC") :
+            tokenBPrice = USDCPrice * 1000000000000
         elif event["quoteToken"]["MAINNET"]["symbol"] == "JOE" :
             tokenBPrice = JOEPrice
         elif (event["quoteToken"]["MAINNET"]["symbol"] == "QI") :
             tokenBPrice = QIPrice 
+        elif (event["quoteToken"]["MAINNET"]["symbol"] == "USDt") :
+            tokenBPrice = USDTPrice * 1000000000000
 
         lpTokenValue = ((lpTokenABalanceContract * tokenAPrice) + (lpTokenBBalanceContract * tokenBPrice)) / lpTokenTSupply
         if event["lpTokenPairsymbol"] == "XJOE" or event["lpTokenPairsymbol"] == "PNG" :
@@ -317,8 +320,8 @@ def queryData():
             tokenBPrice = BAVAPrice
         if event["quoteToken"]["MAINNET"]["symbol"] == "AVAX" :
             tokenBPrice = AVAXPrice
-        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
-            tokenAPrice = AVAXPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenBPrice = AVAXPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "PNG" :
             tokenBPrice = PNGPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "USDT.e" :
@@ -327,8 +330,8 @@ def queryData():
             tokenBPrice = WETHPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "USDC.e" :
             tokenBPrice = USDCPrice * 1000000000000
-        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
-            tokenAPrice = USDCPrice * 1000000000000
+        elif (event["quoteToken"]["MAINNET"]["symbol"] == "USDC") :
+            tokenBPrice = USDCPrice * 1000000000000
         elif event["quoteToken"]["MAINNET"]["symbol"] == "JOE" :
             tokenBPrice = JOEPrice
         elif (event["quoteToken"]["MAINNET"]["symbol"] == "QI") :
@@ -404,8 +407,8 @@ def queryData():
             tokenBPrice = BAVAPrice
         if event["quoteToken"]["MAINNET"]["symbol"] == "AVAX" :
             tokenBPrice = AVAXPrice
-        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
-            tokenAPrice = AVAXPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenBPrice = AVAXPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "PNG" :
             tokenBPrice = PNGPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "USDT.e" :
@@ -414,8 +417,8 @@ def queryData():
             tokenBPrice = WETHPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "USDC.e" :
             tokenBPrice = USDCPrice * 1000000000000
-        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
-            tokenAPrice = USDCPrice * 1000000000000
+        elif (event["quoteToken"]["MAINNET"]["symbol"] == "USDC") :
+            tokenBPrice = USDCPrice * 1000000000000
         elif event["quoteToken"]["MAINNET"]["symbol"] == "JOE" :
             tokenBPrice = JOEPrice
         elif (event["quoteToken"]["MAINNET"]["symbol"] == "QI") :
@@ -483,8 +486,8 @@ def queryData():
             tokenBPrice = BAVAPrice
         if event["quoteToken"]["MAINNET"]["symbol"] == "AVAX" :
             tokenBPrice = AVAXPrice
-        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
-            tokenAPrice = AVAXPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenBPrice = AVAXPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "PNG" :
             tokenBPrice = PNGPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "USDT.e" :
@@ -493,8 +496,8 @@ def queryData():
             tokenBPrice = WETHPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "USDC.e" :
             tokenBPrice = USDCPrice * 1000000000000
-        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
-            tokenAPrice = USDCPrice * 1000000000000
+        elif (event["quoteToken"]["MAINNET"]["symbol"] == "USDC") :
+            tokenBPrice = USDCPrice * 1000000000000
         elif event["quoteToken"]["MAINNET"]["symbol"] == "JOE" :
             tokenBPrice = JOEPrice
         elif (event["quoteToken"]["MAINNET"]["symbol"] == "QI") :
@@ -570,8 +573,8 @@ def queryData():
             tokenBPrice = BAVAPrice
         if event["quoteToken"]["MAINNET"]["symbol"] == "AVAX" :
             tokenBPrice = AVAXPrice
-        elif event["token"]["MAINNET"]["symbol"] == "sAVAX" :
-            tokenAPrice = AVAXPrice
+        elif event["quoteToken"]["MAINNET"]["symbol"] == "sAVAX" :
+            tokenBPrice = AVAXPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "PNG" :
             tokenBPrice = PNGPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "USDT.e" :
@@ -580,8 +583,8 @@ def queryData():
             tokenBPrice = WETHPrice
         elif event["quoteToken"]["MAINNET"]["symbol"] == "USDC.e" :
             tokenBPrice = USDCPrice * 1000000000000
-        elif (event["token"]["MAINNET"]["symbol"] == "USDC") :
-            tokenAPrice = USDCPrice * 1000000000000
+        elif (event["quoteToken"]["MAINNET"]["symbol"] == "USDC") :
+            tokenBPrice = USDCPrice * 1000000000000
         elif event["quoteToken"]["MAINNET"]["symbol"] == "JOE" :
             tokenBPrice = JOEPrice
         elif (event["quoteToken"]["MAINNET"]["symbol"] == "QI") :

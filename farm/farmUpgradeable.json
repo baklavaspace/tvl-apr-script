@@ -22,9 +22,8 @@
       ],
       "platform": "Pangolin",
       "allocPoint": "1000",
-      "projectLink": "https://app.pangolin.exchange/#/png/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/AVAX/2",
-      "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
-      "farmContract": "https://snowtrace.io/address/0x62d8ec77dac6315b70ed6930c18813e5f7e11b93#code",
+      "getLPLink": "https://app.pangolin.exchange/#/pool",
+      "farmContract": "https://snowtrace.io/address/0x9841c066021Bfb9D1c79e8E82A597Dd133d8804F#code",
       "total3rdPartyAPR": "27",
       "3rdPartyId": "7",
       "bonusReward": [],
@@ -69,11 +68,10 @@
       ],
       "platform": "Pangolin",
       "allocPoint": "1000",
-      "projectLink": "https://app.pangolin.exchange/#/png/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/AVAX/2",
-      "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
-      "farmContract": "https://snowtrace.io/address/0x62d8ec77dac6315b70ed6930c18813e5f7e11b93#code",
+      "getLPLink": "https://app.pangolin.exchange/#/pool",
+      "farmContract": "https://snowtrace.io/address/0xc331aF15574d80a4a34FEd8Ee1369E7900dCD47E#code",
       "total3rdPartyAPR": "27",
-      "3rdPartyId": "7",
+      "3rdPartyId": "9",
       "bonusReward": [],
       "token": {
         "MAINNET": {
@@ -116,11 +114,10 @@
       ],
       "platform": "Pangolin",
       "allocPoint": "1000",
-      "projectLink": "https://app.pangolin.exchange/#/png/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/AVAX/2",
-      "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
-      "farmContract": "https://snowtrace.io/address/0x62d8ec77dac6315b70ed6930c18813e5f7e11b93#code",
+      "getLPLink": "https://app.pangolin.exchange/#/pool",
+      "farmContract": "https://snowtrace.io/address/0x2E136DcB78C5C166a55C90F87A4bBFb7C980B7a2#code",
       "total3rdPartyAPR": "27",
-      "3rdPartyId": "7",
+      "3rdPartyId": "84",
       "bonusReward": [],
       "token": {
         "MAINNET": {
@@ -163,11 +160,10 @@
       ],
       "platform": "Pangolin",
       "allocPoint": "1000",
-      "projectLink": "https://app.pangolin.exchange/#/png/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/AVAX/2",
-      "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
-      "farmContract": "https://snowtrace.io/address/0x62d8ec77dac6315b70ed6930c18813e5f7e11b93#code",
+      "getLPLink": "https://app.pangolin.exchange/#/pool",
+      "farmContract": "https://snowtrace.io/address/0x17bc0557d5946b1304f8c0b5af18f4faddbf9d49#code",
       "total3rdPartyAPR": "27",
-      "3rdPartyId": "7",
+      "3rdPartyId": "0",
       "bonusReward": [],
       "token": {
         "MAINNET": {
@@ -210,9 +206,8 @@
       ],
       "platform": "Pangolin",
       "allocPoint": "1000",
-      "projectLink": "https://app.pangolin.exchange/#/png/0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5/AVAX/2",
-      "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0x8729438EB15e2C8B576fCc6AeCdA6A148776C0F5",
-      "farmContract": "https://snowtrace.io/address/0x29c3C2DA6538A07a1d2F40E18E35712a27D03dc8#code",
+      "getLPLink": "https://app.pangolin.exchange/#/pool",
+      "farmContract": "https://snowtrace.io/address/0xeccFBE23903932DE517b0eb1f80d9e8779A864E0#code",
       "total3rdPartyAPR": "37",
       "3rdPartyId": "19",
       "bonusReward": [],
@@ -257,9 +252,8 @@
       ],
       "platform": "Pangolin",
       "allocPoint": "1000",
-      "projectLink": "https://app.pangolin.exchange/#/png/0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB/AVAX/2",
-      "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0x49D5c2BdFfac6CE2BFdB6640F4F80f226bc10bAB",
-      "farmContract": "https://snowtrace.io/address/0x1e992c5941a0bfa0523e52cfba95145d5b1b2e59#code",
+      "getLPLink": "https://app.pangolin.exchange/#/pool",
+      "farmContract": "https://snowtrace.io/address/0x0D382907A342c0ac2DD735a0F8defe59A28D5DE4#code",
       "total3rdPartyAPR": "15",
       "3rdPartyId": "8",
       "bonusReward": [],
@@ -304,9 +298,8 @@
       ],
       "platform": "Pangolin",
       "allocPoint": "1000",
-      "projectLink": "https://app.pangolin.exchange/#/png/0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/2",
-      "getLPLink": "https://app.pangolin.exchange/#/add/0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
-      "farmContract": "https://snowtrace.io/address/0x95fa0768902Be83704DE0EaB18f61cB7E540D2aB#code",
+      "getLPLink": "https://app.pangolin.exchange/#/pool",
+      "farmContract": "https://snowtrace.io/address/0x91CCbbC44221ddb70f54d9E911C4fE80be944232#code",
       "total3rdPartyAPR": "3",
       "3rdPartyId": "54",
       "bonusReward": [],
@@ -351,9 +344,8 @@
       ],
       "platform": "Pangolin",
       "allocPoint": "500",
-      "projectLink": "https://app.pangolin.exchange/#/png/0x2b2C81e08f1Af8835a78Bb2A90AE924ACE0eA4bE/AVAX/2",
-      "getLPLink": "https://app.pangolin.exchange/#/add/AVAX/0x2b2C81e08f1Af8835a78Bb2A90AE924ACE0eA4bE",
-      "farmContract": "https://snowtrace.io/address/0x2811D861777C8f81581ec84784AB53aF68Dc3e9F#code",
+      "getLPLink": "https://app.pangolin.exchange/#/pool",
+      "farmContract": "https://snowtrace.io/address/0xd0Cf7b1071c7c12a7c36ca4CA863B2583D9C338A#code",
       "total3rdPartyAPR": "1",
       "3rdPartyId": "90",
       "bonusReward": [
@@ -400,9 +392,8 @@
       ],
       "platform": "Pangolin",
       "allocPoint": "1000",
-      "projectLink": "https://app.pangolin.exchange/#/png/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/0xc7198437980c041c805A1EDcbA50c1Ce5db95118/2",
-      "getLPLink": "https://app.pangolin.exchange/#/add/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/0xc7198437980c041c805A1EDcbA50c1Ce5db95118",
-      "farmContract": "https://snowtrace.io/address/0x67d566e90ab1343eb5b60c8bcb5f44da11beef77#code",
+      "getLPLink": "https://app.pangolin.exchange/#/pool",
+      "farmContract": "https://snowtrace.io/address/0xDb535E437581f6f72D2547fb9ccaa24A90eeFDF2#code",
       "total3rdPartyAPR": "0",
       "3rdPartyId": "2",
       "bonusReward": [],
@@ -442,10 +433,9 @@
       ],
       "platform": "Pangolin",
       "allocPoint": "250",
-      "projectLink": "https://app.pangolin.exchange/#/stake/0/0x60781C2586D68229fde47564546784ab3fACA982",
-      "getLPLink": "https://app.pangolin.exchange/#/swap?inputCurrency=0xb31f66aa3c1e785363f0875a1b74e27b85fd66c7&outputCurrency=0x60781C2586D68229fde47564546784ab3fACA982",
-      "farmContract": "https://snowtrace.io/address/0x4Ec05b8a6cf887F06e70e9C8a7Aaa244228b2833#code",
-      "total3rdPartyAPR": "18",
+      "getLPLink": "https://app.pangolin.exchange/#/stake/0",
+      "farmContract": "https://snowtrace.io/address/0xD146D2b9E017585faBbE0943e122b07FaefF1380#code",
+      "total3rdPartyAPR": "6",
       "3rdPartyId": "",
       "bonusReward": [],
       "token": {
@@ -489,9 +479,8 @@
       ],
       "platform": "Trader Joe",
       "allocPoint": 1000,
-      "projectLink": "https://baklava.space/traderjoe/",
-      "getLPLink": "https://traderjoexyz.com/pool/AVAX/0xe19a1684873fab5fb694cfd06607100a632ff21c",
-      "baklavaFarmContract": "https://snowtrace.io/address/0x221C6774CF60277b36D21a57A31154EC96299d50#code",
+      "getLPLink": "https://traderjoexyz.com/pool",
+      "farmContract": "https://snowtrace.io/address/0xBFd13f98A84C59D42D2086298100D4d7A715733D#code",
       "total3rdPartyAPR": "1.32",
       "3rdPartyId": "",
       "token": {
@@ -517,7 +506,7 @@
       "pid": 11,
       "lpTokenPairsymbol": "JLP",
       "lpName": "BAVA-USDC.e",
-      "status": "Deprecated",
+      "status": "",
       "lpAddresses": {
         "43114": "0x2C3601Fe09C23DF8BeB8216298D1502C985e376f"
       },
@@ -535,9 +524,8 @@
       ],
       "platform": "Trader Joe",
       "allocPoint": 2000,
-      "projectLink": "https://baklava.space/traderjoe/",
-      "getLPLink": "https://traderjoexyz.com/pool/0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664/0xe19a1684873fab5fb694cfd06607100a632ff21c#/",
-      "baklavaFarmContract": "https://snowtrace.io/address/0x221C6774CF60277b36D21a57A31154EC96299d50#code",
+      "getLPLink": "https://traderjoexyz.com/pool",
+      "farmContract": "https://snowtrace.io/address/0xDCeDB18047945de1F05F649569b3d2B0e648D9C8#code",
       "total3rdPartyAPR": "1.06",
       "3rdPartyId": "",
       "token": {
@@ -556,6 +544,141 @@
           "decimals": "6",
           "symbol": "USDC.e",
           "name": "USD Coin"
+        }
+      }
+    },
+    {
+      "pid": 12,
+      "lpTokenPairsymbol": "JLP",
+      "lpName": "AVAX-USDC",
+      "status": "",
+      "lpAddresses": {
+        "43114": "0xf4003F4efBE8691B60249E6afbD307aBE7758adb"
+      },
+      "icon": [
+        {
+          "image": "avax",
+          "imageSize": "32px",
+          "imagePosition": "iconLeft"
+        },
+        {
+          "image": "usdc",
+          "imageSize": "32px",
+          "imagePosition": "iconRight"
+        }
+      ],
+      "platform": "Trader Joe",
+      "allocPoint": 100,
+      "getLPLink": "https://traderjoexyz.com/pool",
+      "farmContract": "https://snowtrace.io/address/0x2d3147AC6dB2a8DfeE1946a9D59b1B0CBc3489c9#code",
+      "total3rdPartyAPR": "7.01",
+      "3rdPartyId": "",
+      "token": {
+        "MAINNET": {
+          "chainId": "43114",
+          "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+          "decimals": "18",
+          "symbol": "AVAX",
+          "name": "Wrapped AVAX"
+        }
+      },
+      "quoteToken": {
+        "MAINNET": {
+          "chainId": "43114",
+          "address": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+          "decimals": "6",
+          "symbol": "USDC",
+          "name": "USD Coin"
+        }
+      }
+    },
+    {
+      "pid": 13,
+      "lpTokenPairsymbol": "JLP",
+      "lpName": "USDC-USDC.e",
+      "status": "",
+      "lpAddresses": {
+        "43114": "0x2A8A315e82F85D1f0658C5D66A452Bbdd9356783"
+      },
+      "icon": [
+        {
+          "image": "usdc",
+          "imageSize": "32px",
+          "imagePosition": "iconLeft"
+        },
+        {
+          "image": "usdc",
+          "imageSize": "32px",
+          "imagePosition": "iconRight"
+        }
+      ],
+      "platform": "Trader Joe",
+      "allocPoint": 100,
+      "getLPLink": "https://traderjoexyz.com/pool",
+      "farmContract": "https://snowtrace.io/address/0x5cBD2724A4398748615a2ad62ff80607dAC233fC#code",
+      "total3rdPartyAPR": "0.82",
+      "3rdPartyId": "",
+      "token": {
+        "MAINNET": {
+          "chainId": "43114",
+          "address": "0xB97EF9Ef8734C71904D8002F8b6Bc66Dd9c48a6E",
+          "decimals": "6",
+          "symbol": "USDC",
+          "name": "USD Coin"
+        }
+      },
+      "quoteToken": {
+        "MAINNET": {
+          "chainId": "43114",
+          "address": "0xA7D7079b0FEaD91F3e65f86E8915Cb59c1a4C664",
+          "decimals": "6",
+          "symbol": "USDC.e",
+          "name": "USD Coin"
+        }
+      }
+    },
+    {
+      "pid": 14,
+      "lpTokenPairsymbol": "JLP",
+      "lpName": "AVAX-USDT",
+      "status": "",
+      "lpAddresses": {
+        "43114": "0xbb4646a764358ee93c2a9c4a147d5aDEd527ab73"
+      },
+      "icon": [
+        {
+          "image": "avax",
+          "imageSize": "32px",
+          "imagePosition": "iconLeft"
+        },
+        {
+          "image": "usdt",
+          "imageSize": "32px",
+          "imagePosition": "iconRight"
+        }
+      ],
+      "platform": "Trader Joe",
+      "allocPoint": 100,
+      "getLPLink": "https://traderjoexyz.com/pool",
+      "farmContract": "https://snowtrace.io/address/0xFec19beb4e68B4c93622c51d4ad8AF804fe421AA#code",
+      "total3rdPartyAPR": "8.06",
+      "3rdPartyId": "",
+      "token": {
+        "MAINNET": {
+          "chainId": "43114",
+          "address": "0xB31f66AA3C1e785363F0875A1B74E27b85FD66c7",
+          "decimals": "18",
+          "symbol": "AVAX",
+          "name": "Wrapped AVAX"
+        }
+      },
+      "quoteToken": {
+        "MAINNET": {
+          "chainId": "43114",
+          "address": "0x9702230A8Ea53601f5cD2dc00fDBc13d4dF4A8c7",
+          "decimals": "6",
+          "symbol": "USDt",
+          "name": "Tether USD"
         }
       }
     }
