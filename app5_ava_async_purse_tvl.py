@@ -82,7 +82,7 @@ bavaMasterFarmContractUpgradeable = web3.eth.contract(address=bavaMasterFarmUpgr
 
 totalSupply = bavaContract.functions.totalSupply().call(block_identifier= 'latest')
 print("......")
-bonusMultiplier = 130
+bonusMultiplier = 87
 load_dotenv()
 infuraKey = os.getenv("INFURA_KEY")
 mongoDBUser = os.getenv("MONGODB_USERNAME")
